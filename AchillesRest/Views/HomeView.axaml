@@ -1,0 +1,49 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AchillesRest.Views.HomeView"
+             xmlns:vm="using:AchillesRest.ViewModels"
+             x:DataType="vm:HomeViewModel"
+             xmlns:views="using:AchillesRest.Views">
+
+    <Design.DataContext>
+        <vm:HomeViewModel />
+    </Design.DataContext>
+    <!-- LastChildFill="True" -->
+    <Grid ColumnDefinitions="210, 1, *">
+        <views:MenuCollectionsView Grid.Column="0" DataContext="{Binding  MenuCollectionVM}" />
+
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" Background="DimGray" />
+
+        <Panel Grid.Column="2" x:Name="MainPanel">
+            <Grid RowDefinitions="2*, 1, 8*">
+
+
+                <!-- <views:EndpointView /> -->
+                <Rectangle Grid.Row="0" DockPanel.Dock="Top" />
+
+
+                <GridSplitter Grid.Row="1" Background="DimGray" />
+
+                <Grid Grid.Row="2" ColumnDefinitions="*, 1, *">
+                    <Panel Grid.Column="0">
+                        <TextBlock Text="ASDA" />
+                    </Panel>
+                    
+                    <GridSplitter Grid.Column="1" Background="DimGray" ResizeDirection="Columns" />
+                    
+                    <Panel Grid.Column="2">
+                        <TextBlock Text="BCDF"/>
+                    </Panel>
+                    
+                </Grid>
+            </Grid>
+
+
+        </Panel>
+
+    </Grid>
+
+</UserControl>

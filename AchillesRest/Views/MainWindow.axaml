@@ -1,0 +1,68 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="AchillesRest.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        ExtendClientAreaToDecorationsHint="True"
+        TransparencyLevelHint="AcrylicBlur"
+        xmlns:rxui="http://reactiveui.net"
+        Icon="/Assets/avalonia-logo.ico"
+        xmlns:vm="using:AchillesRest.ViewModels"
+        xmlns:views="using:AchillesRest.Views"
+        xmlns:AchillesRest="clr-namespace:AchillesRest"
+        Title="AchillesRest">
+
+    <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+        <vm:MainWindowViewModel />
+    </Design.DataContext>
+
+    <Panel>
+        <ExperimentalAcrylicBorder IsHitTestVisible="False">
+            <ExperimentalAcrylicBorder.Material>
+                <ExperimentalAcrylicMaterial
+                    BackgroundSource="Digger"
+                    TintColor="Black"
+                    TintOpacity="1"
+                    MaterialOpacity="0.65" />
+            </ExperimentalAcrylicBorder.Material>
+        </ExperimentalAcrylicBorder>
+
+        
+        
+        <DockPanel Margin="0 , 25, 0, 0">
+            <Panel Height="20" Background="SkyBlue" DockPanel.Dock="Top">
+                <TextBlock Foreground="Black">Dock = "Top"</TextBlock>
+            </Panel>
+            
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!-- Main Window Here -->
+                <rxui:RoutedViewHost Grid.Column="0" Router="{Binding Router}">
+                    <rxui:RoutedViewHost.DefaultContent>
+                        <TextBlock Text="Default Content" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </rxui:RoutedViewHost.DefaultContent>
+                    <rxui:RoutedViewHost.ViewLocator>
+                        <!-- App View Locator -->
+                        <AchillesRest:ReactiveViewLocator />
+                    </rxui:RoutedViewHost.ViewLocator>
+                </rxui:RoutedViewHost>
+
+
+            </Grid>
+            
+                
+            
+          
+        </DockPanel>
+
+
+    </Panel>
+
+</Window>

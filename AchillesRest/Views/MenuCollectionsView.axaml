@@ -1,0 +1,53 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:AchillesRest.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AchillesRest.Views.MenuCollectionsView"
+             xmlns:vm="using:AchillesRest.ViewModels"
+             xmlns:models="using:AchillesRest.Models"
+             x:DataType="vm:MenuCollectionsViewModel">
+
+    <Design.DataContext>
+        <viewModels:MenuCollectionsViewModel />
+    </Design.DataContext>
+
+    <Panel>
+        <Grid RowDefinitions="*, Auto" x:Name="Root">
+
+            <ScrollViewer>
+                <TreeView ItemsSource="{Binding Collections}" SelectedItem="{Binding  SelectedRequest}">
+                    <TreeView.DataTemplates>
+                        <TreeDataTemplate DataType="vm:CollectionViewModel" ItemsSource="{Binding   Requests}">
+                            <TextBlock Foreground="Wheat" Text="{Binding Name}" />
+                        </TreeDataTemplate>
+                        <DataTemplate DataType="vm:RequestViewModel">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Method}"
+                                           Width="45"
+                                           Foreground="LightGreen"
+                                           />
+                                <Separator  Width="20"/>
+                                <TextBlock Text="{Binding Name}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </TreeView.DataTemplates>
+                </TreeView>
+
+            </ScrollViewer>
+
+            <!-- <TextBox Grid.Row="1" Text="{Binding Name}" Watermark="Create new Collection" -->
+            <!--          HorizontalAlignment="Left"> -->
+            <!--     <TextBox.InnerRightContent> -->
+            <!--         <Button Background="{DynamicResource AccentButtonBackground}" -->
+            <!--                 Command="{Binding AddCollectionCommand}"> -->
+            <!--             ~1~ <PathIcon Data="{StaticResource StoreMicrosoftRegular}" Foreground="Green"></PathIcon> @1@ -->
+            <!--         </Button> -->
+            <!--     </TextBox.InnerRightContent> -->
+            <!-- </TextBox> -->
+        </Grid>
+
+
+    </Panel>
+</UserControl>
