@@ -4,9 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AchillesRest.Views.HomeView"
+             xmlns:views="using:AchillesRest.Views"
              xmlns:vm="using:AchillesRest.ViewModels"
              x:DataType="vm:HomeViewModel"
-             xmlns:views="using:AchillesRest.Views">
+             
+             
+             >
 
     <Design.DataContext>
         <vm:HomeViewModel />
@@ -22,7 +25,9 @@
 
 
                 <!-- <views:EndpointView /> -->
-                <Rectangle Grid.Row="0" DockPanel.Dock="Top" />
+
+
+                <views:RequestManagerView Grid.Row="0" />
 
 
                 <GridSplitter Grid.Row="1" Background="DimGray" />
@@ -31,13 +36,14 @@
                     <Panel Grid.Column="0">
                         <TextBlock Text="ASDA" />
                     </Panel>
-                    
+
                     <GridSplitter Grid.Column="1" Background="DimGray" ResizeDirection="Columns" />
-                    
+
                     <Panel Grid.Column="2">
-                        <TextBlock Text="BCDF"/>
+                        <TextBlock
+                            Text="{Binding RequestService.SelectedRequest.Name, FallbackValue=''}" />
                     </Panel>
-                    
+
                 </Grid>
             </Grid>
 

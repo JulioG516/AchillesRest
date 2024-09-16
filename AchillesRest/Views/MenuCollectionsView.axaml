@@ -10,25 +10,24 @@
              x:DataType="vm:MenuCollectionsViewModel">
 
     <Design.DataContext>
-        <viewModels:MenuCollectionsViewModel />
+        <vm:MenuCollectionsViewModel />
     </Design.DataContext>
 
     <Panel>
         <Grid RowDefinitions="*, Auto" x:Name="Root">
 
             <ScrollViewer>
-                <TreeView ItemsSource="{Binding Collections}" SelectedItem="{Binding  SelectedRequest}">
+                <TreeView ItemsSource="{Binding Collections}" SelectedItem="{Binding  RequestService.SelectedRequest, Mode=TwoWay}">
                     <TreeView.DataTemplates>
                         <TreeDataTemplate DataType="vm:CollectionViewModel" ItemsSource="{Binding   Requests}">
                             <TextBlock Foreground="Wheat" Text="{Binding Name}" />
                         </TreeDataTemplate>
-                        <DataTemplate DataType="vm:RequestViewModel">
+                        <DataTemplate DataType="viewModels:RequestViewModel">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Method}"
                                            Width="45"
-                                           Foreground="LightGreen"
-                                           />
-                                <Separator  Width="20"/>
+                                           Foreground="LightGreen" />
+                                <Separator Width="20" />
                                 <TextBlock Text="{Binding Name}" />
                             </StackPanel>
                         </DataTemplate>
@@ -36,6 +35,7 @@
                 </TreeView>
 
             </ScrollViewer>
+
 
             <!-- <TextBox Grid.Row="1" Text="{Binding Name}" Watermark="Create new Collection" -->
             <!--          HorizontalAlignment="Left"> -->

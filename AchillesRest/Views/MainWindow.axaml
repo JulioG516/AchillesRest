@@ -10,8 +10,7 @@
         xmlns:rxui="http://reactiveui.net"
         Icon="/Assets/avalonia-logo.ico"
         xmlns:vm="using:AchillesRest.ViewModels"
-        xmlns:views="using:AchillesRest.Views"
-        xmlns:AchillesRest="clr-namespace:AchillesRest"
+        xmlns:achillesRest="clr-namespace:AchillesRest"
         Title="AchillesRest">
 
     <Design.DataContext>
@@ -34,9 +33,13 @@
         
         
         <DockPanel Margin="0 , 25, 0, 0">
-            <Panel Height="20" Background="SkyBlue" DockPanel.Dock="Top">
-                <TextBlock Foreground="Black">Dock = "Top"</TextBlock>
-            </Panel>
+            <Menu Height="20" Background="Transparent" DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_Open..."></MenuItem>
+                    <Separator/>
+                    <MenuItem Header="_Import Collection"></MenuItem>
+                </MenuItem>
+            </Menu>
             
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -50,7 +53,7 @@
                     </rxui:RoutedViewHost.DefaultContent>
                     <rxui:RoutedViewHost.ViewLocator>
                         <!-- App View Locator -->
-                        <AchillesRest:ReactiveViewLocator />
+                        <achillesRest:ReactiveViewLocator />
                     </rxui:RoutedViewHost.ViewLocator>
                 </rxui:RoutedViewHost>
 

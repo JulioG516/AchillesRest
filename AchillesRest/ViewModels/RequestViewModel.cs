@@ -21,11 +21,22 @@ public class RequestViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _name, value);
     }
 
-    public RequestViewModel() { }
+    private string? _endpoint;
+
+    public string? Endpoint
+    {
+        get => _endpoint;
+        set => this.RaiseAndSetIfChanged(ref _endpoint, value);
+    }
+
+    public RequestViewModel()
+    {
+    }
 
     public RequestViewModel(Request request)
     {
         Name = request.Name;
         Method = request.Method;
+        Endpoint = request.Endpoint;
     }
 }

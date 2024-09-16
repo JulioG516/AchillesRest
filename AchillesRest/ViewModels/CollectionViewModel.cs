@@ -24,8 +24,6 @@ public class CollectionViewModel : ViewModelBase
         get => _requests;
         set => this.RaiseAndSetIfChanged(ref _requests, value);
     }
-
-
     
     public CollectionViewModel(Collection collection)
     {

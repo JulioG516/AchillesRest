@@ -1,4 +1,5 @@
 ﻿using AchillesRest.ViewModels;
+using AchillesRest.ViewModels;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
