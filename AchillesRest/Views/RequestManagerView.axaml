@@ -5,13 +5,50 @@
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="150"
              x:Class="AchillesRest.Views.RequestManagerView"
              xmlns:vm="using:AchillesRest.ViewModels"
+             xmlns:converters="clr-namespace:AchillesRest.Converters"
              x:DataType="vm:RequestManagerViewModel">
     <Design.DataContext>
         <vm:RequestManagerViewModel />
     </Design.DataContext>
 
-    <Panel>
-        <TextBlock Text="Endpoint, Action, Method..."></TextBlock>
-    </Panel>
+    <UserControl.Resources>
+        <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
+    </UserControl.Resources>
+
+    <Grid RowDefinitions="35, *">
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <TextBox MinWidth="200" Margin="10, 0, 15, 0"
+                Text="{Binding RequestService.SelectedRequest.Name, 
+                FallbackValue=''}"
+                Watermark="Request Name"
+                BorderBrush="Transparent" />
+
+            <Button>Save</Button>
+
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="120, *, 80" Height="50">
+            <ComboBox Grid.Column="0" MinWidth="120"
+                      VerticalContentAlignment="Center"
+                      HorizontalContentAlignment="Center"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center"
+                      SelectedItem="{Binding RequestService.SelectedRequest.Action, 
+                                     FallbackValue=''}"
+                      ItemsSource="{Binding Actions}"
+                      DisplayMemberBinding="{Binding Converter={StaticResource EnumToStringConverter}}"
+                      Margin="15, 0, 15, 0">
+
+            </ComboBox>
+
+            <TextBox Grid.Column="1"
+                     Watermark="Endpoint"
+                     Text="{Binding RequestService.SelectedRequest.Endpoint, 
+                     FallbackValue=''}"
+                     Margin="0, 0, 15, 0" />
+            <Button Grid.Column="2">OK</Button>
+        </Grid>
+
+    </Grid>
 
 </UserControl>

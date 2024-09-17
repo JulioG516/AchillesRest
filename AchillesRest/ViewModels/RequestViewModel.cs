@@ -1,16 +1,17 @@
 ﻿using AchillesRest.Models;
+using AchillesRest.Models.Enums;
 using ReactiveUI;
 
 namespace AchillesRest.ViewModels;
 
 public class RequestViewModel : ViewModelBase
 {
-    private string? _method;
+    private EnumActions? _action;
 
-    public string? Method
+    public EnumActions? Action
     {
-        get => _method;
-        set => this.RaiseAndSetIfChanged(ref _method, value);
+        get => _action;
+        set => this.RaiseAndSetIfChanged(ref _action, value);
     }
 
     private string? _name;
@@ -36,7 +37,7 @@ public class RequestViewModel : ViewModelBase
     public RequestViewModel(Request request)
     {
         Name = request.Name;
-        Method = request.Method;
+        Action = request.Action;
         Endpoint = request.Endpoint;
     }
 }

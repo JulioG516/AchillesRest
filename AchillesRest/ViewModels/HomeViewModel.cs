@@ -10,7 +10,9 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
 
     public IScreen HostScreen { get; }
 
-    public HomeViewModel() { }
+    public HomeViewModel()
+    {
+    }
 
     public HomeViewModel(IScreen screen)
     {
@@ -20,10 +22,10 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
         // RequestService.WhenAnyValue(x => x.SelectedRequest)
         //     .Where(x => x is not null)
         //     .ToProperty(this, x => x.SelRequest, out selRequest);
-        
     }
-    
+
     public ViewModelBase MenuCollectionVM { get; } = new MenuCollectionsViewModel();
+    public ViewModelBase RequestManagerVM { get; } = new RequestManagerViewModel();
     public RequestService RequestService { get; }
 
     private RequestViewModel? _selectedRequest;

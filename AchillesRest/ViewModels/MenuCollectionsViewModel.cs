@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Reactive.Linq;
+using System.Linq;
+using System.Reactive;
 using System.Windows.Input;
 using AchillesRest.Models;
+using AchillesRest.Models.Enums;
 using AchillesRest.Services;
+using Avalonia.Controls;
 using ReactiveUI;
 using Splat;
 
@@ -20,7 +22,9 @@ public class MenuCollectionsViewModel : ViewModelBase
     public MenuCollectionsViewModel()
     {
         RequestService = Locator.Current.GetService<RequestService>()!;
-        TestCommand = ReactiveCommand.Create(Test);
+        CtxAddRequestCommand = ReactiveCommand.Create<CollectionViewModel>(ContextMenuAddRequest);
+        CtxDeleteRequestCommand = ReactiveCommand.Create<RequestViewModel>(ContextMenuDeleteRequest);
+
 
         // this.WhenAnyValue(x => x.SelectedRequest)
         //     .Where(x => x is not null)
@@ -31,14 +35,33 @@ public class MenuCollectionsViewModel : ViewModelBase
     {
         // HostScreen = hostScreen;
         RequestService = Locator.Current.GetService<RequestService>()!;
-        TestCommand = ReactiveCommand.Create(() => { Debug.WriteLine(RequestService.SelectedRequest); });
     }
 
-    public ICommand TestCommand { get; }
+    public ICommand CtxAddRequestCommand { get; }
 
-    private void Test()
+    private void ContextMenuAddRequest(CollectionViewModel collectionViewModel)
     {
-        Debug.WriteLine(RequestService.SelectedRequest);
+        Debug.WriteLine(collectionViewModel);
+
+        collectionViewModel.Requests!.Add(new RequestViewModel(new Request
+        {
+            Action = EnumActions.GET,
+            Name = "Unnamed"
+        }));
+    }
+
+    public ICommand CtxDeleteRequestCommand { get; }
+
+    private void ContextMenuDeleteRequest(RequestViewModel request)
+    {
+        Debug.WriteLine(request);
+        var collection = Collections.FirstOrDefault(w => w.Requests.Contains(request));
+    
+        if (collection != null)
+        {
+            // Remove the request from the collection
+            collection.Requests.Remove(request);
+        }        
     }
 
     public ObservableCollection<CollectionViewModel> Collections { get; } = new(FillCollection());
@@ -63,9 +86,12 @@ public class MenuCollectionsViewModel : ViewModelBase
                 Name = "Col 1.",
                 Requests = new List<Request>
                 {
-                    new() { Method = "GET", Name = "Teste", Endpoint = "http://localhost:5200/test"},
-                    new() { Method = "GET", Name = "Teste 2" },
-                    new() { Method = "POST", Name = "Teste 3" },
+                    new() { Action = EnumActions.DELETE, Name = "Teste", Endpoint = "http://localhost:5200/test/get" },
+                    new()
+                    {
+                        Action = EnumActions.OPTIONS, Name = "Teste 2", Endpoint = "http://localhost:5200/test/options"
+                    },
+                    new() { Action = EnumActions.POST, Name = "Teste 3", Endpoint = "http://localhost:5200/test/post" },
                 }
             }),
             new(new Collection
@@ -73,9 +99,9 @@ public class MenuCollectionsViewModel : ViewModelBase
                 Name = "Col 2.",
                 Requests = new List<Request>
                 {
-                    new() { Method = "PATCH", Name = "Teste 2.1" },
-                    new() { Method = "PUT", Name = "Teste 2.2" },
-                    new() { Method = "HEAD", Name = "Teste 2.3" },
+                    new() { Action = EnumActions.HEAD, Name = "Teste 2.1", Endpoint = "http://localhost:5200/test2" },
+                    new() { Action = EnumActions.PUT, Name = "Teste 2.2", Endpoint = "http://localhost:5200/test2" },
+                    new() { Action = EnumActions.PATCH, Name = "Teste 2.3", Endpoint = "http://localhost:5200/test2" },
                 }
             }),
         };

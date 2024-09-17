@@ -11,7 +11,9 @@
         Icon="/Assets/avalonia-logo.ico"
         xmlns:vm="using:AchillesRest.ViewModels"
         xmlns:achillesRest="clr-namespace:AchillesRest"
-        Title="AchillesRest">
+        Title="AchillesRest"
+        MinWidth="900" MinHeight="720"
+        >
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,

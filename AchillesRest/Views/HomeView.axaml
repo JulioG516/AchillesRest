@@ -6,10 +6,7 @@
              x:Class="AchillesRest.Views.HomeView"
              xmlns:views="using:AchillesRest.Views"
              xmlns:vm="using:AchillesRest.ViewModels"
-             x:DataType="vm:HomeViewModel"
-             
-             
-             >
+             x:DataType="vm:HomeViewModel">
 
     <Design.DataContext>
         <vm:HomeViewModel />
@@ -27,7 +24,7 @@
                 <!-- <views:EndpointView /> -->
 
 
-                <views:RequestManagerView Grid.Row="0" />
+                <views:RequestManagerView Grid.Row="0" DataContext="{Binding RequestManagerVM}" />
 
 
                 <GridSplitter Grid.Row="1" Background="DimGray" />
