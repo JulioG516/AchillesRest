@@ -8,7 +8,7 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
 {
     public string? UrlPathSegment { get; } = "HomeViewModel";
 
-    public IScreen HostScreen { get; }
+    public IScreen HostScreen { get; } = null!;
 
     public HomeViewModel()
     {
@@ -24,9 +24,9 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
         //     .ToProperty(this, x => x.SelRequest, out selRequest);
     }
 
-    public ViewModelBase MenuCollectionVM { get; } = new MenuCollectionsViewModel();
-    public ViewModelBase RequestManagerVM { get; } = new RequestManagerViewModel();
-    public RequestService RequestService { get; }
+    public ViewModelBase MenuCollectionVm { get; } = new MenuCollectionsViewModel();
+    public ViewModelBase RequestManagerVm { get; } = new RequestManagerViewModel();
+    public RequestService RequestService { get; } = null!;
 
     private RequestViewModel? _selectedRequest;
 

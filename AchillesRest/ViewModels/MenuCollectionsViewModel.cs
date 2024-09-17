@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive;
 using System.Windows.Input;
 using AchillesRest.Models;
 using AchillesRest.Models.Enums;
 using AchillesRest.Services;
-using Avalonia.Controls;
 using ReactiveUI;
 using Splat;
 
@@ -15,34 +12,24 @@ namespace AchillesRest.ViewModels;
 
 public class MenuCollectionsViewModel : ViewModelBase
 {
-    // , IRoutableViewModel
-    // public string? UrlPathSegment { get; } = "CollectionViewModel";
-    // public IScreen HostScreen { get; }
-
     public MenuCollectionsViewModel()
     {
         RequestService = Locator.Current.GetService<RequestService>()!;
+
+        CreateCollectionCommand = ReactiveCommand.Create(CreateCollection);
+        
+        // Context Menu action in Collections
         CtxAddRequestCommand = ReactiveCommand.Create<CollectionViewModel>(ContextMenuAddRequest);
+        CtxDeleteCollectionCommand = ReactiveCommand.Create<CollectionViewModel>(ContextMenuDeleteCollection);
+
+        // Actions in requests
         CtxDeleteRequestCommand = ReactiveCommand.Create<RequestViewModel>(ContextMenuDeleteRequest);
-
-
-        // this.WhenAnyValue(x => x.SelectedRequest)
-        //     .Where(x => x is not null)
-        //     .Subscribe(x => { RequestService.SelectedRequest = x; });
-    }
-
-    public MenuCollectionsViewModel(IScreen hostScreen)
-    {
-        // HostScreen = hostScreen;
-        RequestService = Locator.Current.GetService<RequestService>()!;
     }
 
     public ICommand CtxAddRequestCommand { get; }
 
     private void ContextMenuAddRequest(CollectionViewModel collectionViewModel)
     {
-        Debug.WriteLine(collectionViewModel);
-
         collectionViewModel.Requests!.Add(new RequestViewModel(new Request
         {
             Action = EnumActions.GET,
@@ -54,28 +41,37 @@ public class MenuCollectionsViewModel : ViewModelBase
 
     private void ContextMenuDeleteRequest(RequestViewModel request)
     {
-        Debug.WriteLine(request);
-        var collection = Collections.FirstOrDefault(w => w.Requests.Contains(request));
-    
+        var collection = Collections.FirstOrDefault(w => w.Requests != null && w.Requests.Contains(request));
+
         if (collection != null)
         {
             // Remove the request from the collection
-            collection.Requests.Remove(request);
-        }        
+            collection.Requests!.Remove(request);
+        }
     }
+
+    public ICommand CtxDeleteCollectionCommand { get; }
+
+    public ICommand CreateCollectionCommand { get; }
+
+    private void CreateCollection()
+    {
+        Collections.Add(new CollectionViewModel(new Collection
+        {
+            Name = "Unnamed Collection",
+            Requests = new List<Request>()
+        }));
+    }
+
+    private void ContextMenuDeleteCollection(CollectionViewModel collectionViewModel)
+    {
+        Collections.Remove(collectionViewModel);
+    }
+
 
     public ObservableCollection<CollectionViewModel> Collections { get; } = new(FillCollection());
 
-    private RequestViewModel? _selectedRequest;
-
-    public RequestViewModel? SelectedRequest
-    {
-        get => _selectedRequest;
-        set => this.RaiseAndSetIfChanged(ref _selectedRequest, value);
-    }
-
     public RequestService RequestService { get; }
-
 
     private static List<CollectionViewModel> FillCollection()
     {
@@ -106,4 +102,13 @@ public class MenuCollectionsViewModel : ViewModelBase
             }),
         };
     }
+
+
+    // private RequestViewModel? _selectedRequest;
+    //
+    // public RequestViewModel? SelectedRequest
+    // {
+    //     get => _selectedRequest;
+    //     set => this.RaiseAndSetIfChanged(ref _selectedRequest, value);
+    // }
 }

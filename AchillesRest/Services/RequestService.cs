@@ -1,5 +1,4 @@
-﻿using AchillesRest.Models;
-using AchillesRest.ViewModels;
+﻿using AchillesRest.ViewModels;
 using ReactiveUI;
 
 namespace AchillesRest.Services;

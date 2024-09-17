@@ -6,32 +6,34 @@
              mc:Ignorable="d" d:DesignWidth="215" d:DesignHeight="700"
              x:Class="AchillesRest.Views.MenuCollectionsView"
              xmlns:vm="using:AchillesRest.ViewModels"
-             xmlns:models="using:AchillesRest.Models"
-             xmlns:helpers="clr-namespace:AchillesRest.Helpers"
-             xmlns:converters="clr-namespace:AchillesRest.Converters"
              x:DataType="vm:MenuCollectionsViewModel">
 
     <Design.DataContext>
         <vm:MenuCollectionsViewModel />
     </Design.DataContext>
 
-    <UserControl.Resources>
-        <converters:MyMultiValueConverter x:Key="MyMultiValueConverter" />
-    </UserControl.Resources>
-
-
     <Panel>
-        <Grid RowDefinitions="*, Auto" x:Name="Root">
+        <Grid RowDefinitions="20,*, Auto" x:Name="Root">
 
-            <ScrollViewer>
+            <StackPanel Grid.Row="0" Margin="0, 5, 0, 5" Orientation="Horizontal">
+                <Button Width="20" Height="20"
+                        ToolTip.Tip="Create a new collection."
+                        Command="{Binding CreateCollectionCommand}">
+                    <PathIcon Data="{StaticResource AddSquareRegular}"
+                              Width="15" Height="15" />
+                </Button>
+
+                
+                
+            </StackPanel>
+
+            <ScrollViewer Grid.Row="1">
                 <TreeView ItemsSource="{Binding Collections}"
                           SelectedItem="{Binding  RequestService.SelectedRequest, Mode=TwoWay}">
                     <TreeView.DataTemplates>
                         <TreeDataTemplate DataType="vm:CollectionViewModel" ItemsSource="{Binding   Requests}">
 
-                            <TextBlock Classes="ColName" Foreground="Wheat" Text="{Binding Name}">
-
-                            </TextBlock>
+                            <TextBlock Foreground="Wheat" Text="{Binding Name}" />
                         </TreeDataTemplate>
                         <DataTemplate DataType="viewModels:RequestViewModel">
 
@@ -61,7 +63,9 @@
                                                       Command="{Binding $parent[TreeView].((vm:MenuCollectionsViewModel)DataContext).CtxAddRequestCommand}"
                                                       CommandParameter="{Binding $parent[TreeViewItem].DataContext}" />
                                             <Separator />
-                                            <MenuItem Header="Delete collection" />
+                                            <MenuItem Header="Delete collection"
+                                                      Command="{Binding $parent[TreeView].((vm:MenuCollectionsViewModel)DataContext).CtxDeleteCollectionCommand}"
+                                                      CommandParameter="{Binding $parent[TreeViewItem].DataContext}" />
                                         </ContextMenu>
                                     </Setter.Value>
                                 </Setter>
@@ -74,11 +78,10 @@
                                             <MenuItem Header="Delete"
                                                       x:Name="Item"
                                                       Command="{Binding $parent[TreeView].((vm:MenuCollectionsViewModel)DataContext).CtxDeleteRequestCommand}"
-                                                      CommandParameter="{Binding $parent[TreeViewItem].DataContext}"
-                                                      >
+                                                      CommandParameter="{Binding $parent[TreeViewItem].DataContext}">
                                                 <MenuItem.Icon>
                                                     <PathIcon Data="{StaticResource DeleteRegular}"
-                                                              Foreground="White"/>   
+                                                              Foreground="White" />
                                                 </MenuItem.Icon>
                                                 <MenuItem.Styles>
                                                     <Styles>
@@ -87,15 +90,6 @@
                                                         </Style>
                                                     </Styles>
                                                 </MenuItem.Styles>
-                                                
-                                                <!-- Easy way just pass the current request and find it on collection delete. -->
-                                                
-                                                <!-- <MenuItem.CommandParameter> -->
-                                                <!--     <MultiBinding Converter="{StaticResource MyMultiValueConverter}"> -->
-                                                <!--         <Binding  Path="$parent[TreeViewItem]" ElementName="Item"></Binding> -->
-                                                <!--     </MultiBinding> -->
-                                                <!-- </MenuItem.CommandParameter> -->
-
                                             </MenuItem>
                                         </ContextMenu>
                                     </Setter.Value>

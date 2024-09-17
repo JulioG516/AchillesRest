@@ -13,7 +13,7 @@
     </Design.DataContext>
     <!-- LastChildFill="True" -->
     <Grid ColumnDefinitions="210, 1, *">
-        <views:MenuCollectionsView Grid.Column="0" DataContext="{Binding  MenuCollectionVM}" />
+        <views:MenuCollectionsView Grid.Column="0" DataContext="{Binding  MenuCollectionVm}" />
 
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" Background="DimGray" />
 
@@ -24,7 +24,7 @@
                 <!-- <views:EndpointView /> -->
 
 
-                <views:RequestManagerView Grid.Row="0" DataContext="{Binding RequestManagerVM}" />
+                <views:RequestManagerView Grid.Row="0" DataContext="{Binding RequestManagerVm}" />
 
 
                 <GridSplitter Grid.Row="1" Background="DimGray" />
