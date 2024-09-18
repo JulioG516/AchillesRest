@@ -1,0 +1,52 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AchillesRest.Views.CollectionManagerView"
+             xmlns:vm="using:AchillesRest.ViewModels"
+             x:DataType="vm:CollectionManagerViewModel">
+
+    <Design.DataContext>
+        <vm:CollectionManagerViewModel />
+    </Design.DataContext>
+
+    <UserControl.Styles>
+        <Styles>
+            <Style Selector="TabItem">
+                
+                <!--  Selected state  -->
+                <!--  We don't use selector to PART_LayoutRoot, so developer can override selected item background with TabStripItem.Background  -->
+                <Style Selector="^:selected">
+                    <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundSelected}" />
+                    <Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundSelected}" />
+                </Style>
+                <Style Selector="^:selected /template/ Border#PART_SelectedPipe">
+                    <Setter Property="IsVisible" Value="True" />
+                    <Setter Property="Background" Value="{DynamicResource TreeViewItemBackgroundPointerOver}"/>
+                </Style>
+            </Style>
+        </Styles>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="50, *">
+        <Grid Grid.ColumnDefinitions="200, *" Grid.Row="0">
+            <TextBox Watermark="Collection name"
+                     Text="{Binding RequestService.SelectedCollection.Name,
+                        FallbackValue=''}"
+                     BorderBrush="Transparent" />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <TabControl>
+                <TabItem Header="Description">
+                </TabItem>
+                <TabItem Header="Authorization">
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+    </Grid>
+
+
+</UserControl>

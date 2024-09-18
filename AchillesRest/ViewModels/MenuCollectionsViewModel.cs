@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Net.Http;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using AchillesRest.Models;
@@ -26,12 +27,13 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
         // Context Menu action in Collections
         CtxAddRequestCommand = ReactiveCommand.Create<CollectionViewModel>(ContextMenuAddRequest);
         CtxDeleteCollectionCommand = ReactiveCommand.Create<CollectionViewModel>(ContextMenuDeleteCollection);
-        CtxCollectionPropertiesCommand = ReactiveCommand.Create<CollectionViewModel>(ContextMenuSeeCollectionProperties);
-        
+        CtxCollectionPropertiesCommand =
+            ReactiveCommand.Create<CollectionViewModel>(ContextMenuSeeCollectionProperties);
+
         // Actions in requests
         CtxDeleteRequestCommand = ReactiveCommand.Create<RequestViewModel>(ContextMenuDeleteRequest);
 
-
+        // Select in the shared properties an value that can be RequestViewModel or CollectionViewModel.
         this.WhenAnyValue(x => x.SelectedNode)
             .DistinctUntilChanged()
             .Where(x => x is not null)
@@ -85,21 +87,16 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
 
 
     private SourceList<CollectionViewModel> _sourceList = new();
-
     private readonly ReadOnlyObservableCollection<CollectionViewModel> _collection;
     public ReadOnlyObservableCollection<CollectionViewModel> Collections => _collection;
 
 
     private readonly IDisposable _cleanUp;
 
-    // public ObservableCollection<CollectionViewModel> Collections { get; } = new(FillCollection());
-
-
     public void Dispose()
     {
         _cleanUp.Dispose();
     }
-
 
     public ICommand CtxAddRequestCommand { get; }
 
@@ -131,9 +128,10 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
 
     private void ContextMenuDeleteCollection(CollectionViewModel collectionViewModel)
     {
-        // Collections.Remove(collectionViewModel);
-
         _sourceList.Remove(collectionViewModel);
+
+        if (RequestService.SelectedCollection == collectionViewModel)
+            RequestService.SelectedCollection = null;
     }
 
     public ICommand CtxCollectionPropertiesCommand { get; }
@@ -145,12 +143,6 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
 
     private void CreateCollection()
     {
-        // Collections.Add(new CollectionViewModel(new Collection
-        // {
-        //     Name = "Unnamed Collection",
-        //     Requests = new List<Request>()
-        // }));
-
         _sourceList.Edit((update) =>
         {
             update.Add(new CollectionViewModel(new Collection

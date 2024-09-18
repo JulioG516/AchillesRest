@@ -6,7 +6,10 @@
              x:Class="AchillesRest.Views.HomeView"
              xmlns:views="using:AchillesRest.Views"
              xmlns:vm="using:AchillesRest.ViewModels"
-             x:DataType="vm:HomeViewModel">
+             x:DataType="vm:HomeViewModel"
+             
+             
+             >
 
     <Design.DataContext>
         <vm:HomeViewModel />
@@ -24,8 +27,7 @@
                 IsVisible="{Binding RequestService.SelectedCollection,
             Converter={x:Static ObjectConverters.IsNotNull }}">
 
-                <Rectangle Fill="OrangeRed"/>
-
+               <views:CollectionManagerView DataContext="{Binding CollectionManagerVm}"/>
             </Grid>
 
             <!-- Requests Manager -->

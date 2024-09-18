@@ -26,6 +26,7 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
 
     public ViewModelBase MenuCollectionVm { get; } = new MenuCollectionsViewModel();
     public ViewModelBase RequestManagerVm { get; } = new RequestManagerViewModel();
+    public ViewModelBase CollectionManagerVm { get; } = new CollectionManagerViewModel();
     public RequestService RequestService { get; } = null!;
 
     private RequestViewModel? _selectedRequest;
