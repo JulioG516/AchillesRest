@@ -18,7 +18,7 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
     public MenuCollectionsViewModel()
     {
         _sourceList.AddRange(FillCollection());
-        
+
         RequestService = Locator.Current.GetService<RequestService>()!;
 
         CreateCollectionCommand = ReactiveCommand.Create(CreateCollection);
@@ -26,9 +26,32 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
         // Context Menu action in Collections
         CtxAddRequestCommand = ReactiveCommand.Create<CollectionViewModel>(ContextMenuAddRequest);
         CtxDeleteCollectionCommand = ReactiveCommand.Create<CollectionViewModel>(ContextMenuDeleteCollection);
-
+        CtxCollectionPropertiesCommand = ReactiveCommand.Create<CollectionViewModel>(ContextMenuSeeCollectionProperties);
+        
         // Actions in requests
         CtxDeleteRequestCommand = ReactiveCommand.Create<RequestViewModel>(ContextMenuDeleteRequest);
+
+
+        this.WhenAnyValue(x => x.SelectedNode)
+            .DistinctUntilChanged()
+            .Where(x => x is not null)
+            .Subscribe(x =>
+            {
+                if (x.GetType() == typeof(CollectionViewModel))
+                {
+                    RequestService.SelectedRequest = null;
+                    RequestService.SelectedCollection = x as CollectionViewModel;
+                }
+                else if (x.GetType() == typeof(RequestViewModel))
+                {
+                    RequestService.SelectedCollection = null;
+                    RequestService.SelectedRequest = x as RequestViewModel;
+                }
+                else
+                {
+                    throw new UnhandledErrorException();
+                }
+            });
 
 
         Func<CollectionViewModel, bool> CollectionFilter(string? text) => collection =>
@@ -52,8 +75,17 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
             .Subscribe();
     }
 
+    private ReactiveObject? _selectedNode;
+
+    public ReactiveObject? SelectedNode
+    {
+        get => _selectedNode;
+        set => this.RaiseAndSetIfChanged(ref _selectedNode, value);
+    }
+
+
     private SourceList<CollectionViewModel> _sourceList = new();
-    
+
     private readonly ReadOnlyObservableCollection<CollectionViewModel> _collection;
     public ReadOnlyObservableCollection<CollectionViewModel> Collections => _collection;
 
@@ -104,6 +136,12 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
         _sourceList.Remove(collectionViewModel);
     }
 
+    public ICommand CtxCollectionPropertiesCommand { get; }
+
+    private void ContextMenuSeeCollectionProperties(CollectionViewModel collectionViewModel)
+    {
+        SelectedNode = collectionViewModel;
+    }
 
     private void CreateCollection()
     {
@@ -143,12 +181,20 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
                 Name = "Col 1.",
                 Requests = new List<Request>
                 {
-                    new() { Action = EnumActions.DELETE, Name = "Delete Action", Endpoint = "http://localhost:5200/test/get" },
                     new()
                     {
-                        Action = EnumActions.OPTIONS, Name = "Options Aqui", Endpoint = "http://localhost:5200/test/options"
+                        Action = EnumActions.DELETE, Name = "Delete Action", Endpoint = "http://localhost:5200/test/get"
                     },
-                    new() { Action = EnumActions.POST, Name = "Post Json With something", Endpoint = "http://localhost:5200/test/post" },
+                    new()
+                    {
+                        Action = EnumActions.OPTIONS, Name = "Options Aqui",
+                        Endpoint = "http://localhost:5200/test/options"
+                    },
+                    new()
+                    {
+                        Action = EnumActions.POST, Name = "Post Json With something",
+                        Endpoint = "http://localhost:5200/test/post"
+                    },
                 }
             }),
             new(new Collection
@@ -156,12 +202,14 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
                 Name = "Col 2.",
                 Requests = new List<Request>
                 {
-                    new() { Action = EnumActions.HEAD, Name = "PICK THE values", Endpoint = "http://localhost:5200/test2" },
+                    new()
+                    {
+                        Action = EnumActions.HEAD, Name = "PICK THE values", Endpoint = "http://localhost:5200/test2"
+                    },
                     new() { Action = EnumActions.PUT, Name = "Placeholder", Endpoint = "http://localhost:5200/test2" },
                     new() { Action = EnumActions.PATCH, Name = "Patchhhhhh", Endpoint = "http://localhost:5200/test2" },
                 }
             }),
         };
     }
-    
 }

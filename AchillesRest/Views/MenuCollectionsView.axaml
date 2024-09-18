@@ -27,11 +27,11 @@
                          Height="5"
                          Text="{Binding SearchCollectionText}"
                          Margin="5, 5, 0, 5">
-                        
+
                     <TextBox.InnerLeftContent>
                         <PathIcon Data="{StaticResource SearchRegular}"
                                   Margin="5, 0, 0, 0"
-                                  Foreground="White" Width="20" Height="20"  />
+                                  Foreground="White" Width="20" Height="20" />
                     </TextBox.InnerLeftContent>
                 </TextBox>
 
@@ -39,7 +39,8 @@
 
             <ScrollViewer Grid.Row="1">
                 <TreeView ItemsSource="{Binding Collections}"
-                          SelectedItem="{Binding  RequestService.SelectedRequest, Mode=TwoWay}">
+                          SelectedItem="{Binding  SelectedNode, Mode=TwoWay}"
+                          >
                     <TreeView.DataTemplates>
                         <TreeDataTemplate DataType="vm:CollectionViewModel" ItemsSource="{Binding   Requests}">
 
@@ -76,10 +77,16 @@
                                             <MenuItem Header="Delete collection"
                                                       Command="{Binding $parent[TreeView].((vm:MenuCollectionsViewModel)DataContext).CtxDeleteCollectionCommand}"
                                                       CommandParameter="{Binding $parent[TreeViewItem].DataContext}" />
+                                            <Separator />
+                                            <MenuItem Header="Properties..."
+                                                      Command="{Binding $parent[TreeView].((vm:MenuCollectionsViewModel)DataContext).CtxCollectionPropertiesCommand}"
+                                                      CommandParameter="{Binding $parent[TreeViewItem].DataContext}" />
                                         </ContextMenu>
                                     </Setter.Value>
                                 </Setter>
                             </Style>
+           
+                                                               
 
                             <Style Selector="TreeViewItem[Level=1]">
                                 <Setter Property="ContextMenu">
@@ -104,7 +111,27 @@
                                         </ContextMenu>
                                     </Setter.Value>
                                 </Setter>
+                                
+
+                                <Style Selector="^:selected /template/ Border#PART_LayoutRoot">
+                                    <Setter Property="Background"
+                                            Value="{DynamicResource TreeViewItemBackgroundPointerOver}" />
+                                    <Setter Property="BorderBrush"
+                                            Value="{DynamicResource TreeViewItemBorderBrushSelected}" />
+                                    
+                                </Style>
+                                
+                
+                                <Style
+                                    Selector="^:selected /template/ Border#PART_LayoutRoot > ContentPresenter#PART_HeaderPresenter">
+                                    <Setter Property="Foreground"
+                                            Value="{DynamicResource TreeViewItemBackgroundPointerOver}" />
+                                </Style>
+
+                               
+
                             </Style>
+
 
                         </Styles>
                     </TreeView.Styles>

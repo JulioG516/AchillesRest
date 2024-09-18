@@ -18,27 +18,37 @@
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" Background="DimGray" />
 
         <Panel Grid.Column="2" x:Name="MainPanel">
-            <Grid RowDefinitions="2*, 1, 8*">
 
+            <!-- Collection Manager -->
+            <Grid
+                IsVisible="{Binding RequestService.SelectedCollection,
+            Converter={x:Static ObjectConverters.IsNotNull }}">
 
-                <!-- <views:EndpointView /> -->
+                <Rectangle Fill="OrangeRed"/>
 
+            </Grid>
 
-                <views:RequestManagerView Grid.Row="0" DataContext="{Binding RequestManagerVm}" />
+            <!-- Requests Manager -->
+            <Grid RowDefinitions="2*, 1, 8*"
+                  IsVisible="{Binding RequestService.SelectedRequest, 
+            Converter={x:Static ObjectConverters.IsNotNull}}">
+
+                <views:RequestManagerView Grid.Row="0"
+                                          DataContext="{Binding RequestManagerVm}" />
 
 
                 <GridSplitter Grid.Row="1" Background="DimGray" />
 
                 <Grid Grid.Row="2" ColumnDefinitions="*, 1, *">
                     <Panel Grid.Column="0">
-                        <TextBlock Text="ASDA" />
+                        <TextBlock Text="Request View w/Auth View, Header, Params" />
                     </Panel>
 
                     <GridSplitter Grid.Column="1" Background="DimGray" ResizeDirection="Columns" />
 
                     <Panel Grid.Column="2">
                         <TextBlock
-                            Text="{Binding RequestService.SelectedRequest.Name, FallbackValue=''}" />
+                            Text="Response View" />
                     </Panel>
 
                 </Grid>

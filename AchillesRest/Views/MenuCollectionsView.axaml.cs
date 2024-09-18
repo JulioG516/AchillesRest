@@ -1,4 +1,8 @@
-﻿using AchillesRest.ViewModels;
+﻿using System.Diagnostics;
+using AchillesRest.ViewModels;
+using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
