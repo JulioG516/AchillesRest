@@ -1,4 +1,10 @@
-﻿using AchillesRest.Services;
+﻿using System;
+using System.Net.Http;
+using System.Reactive.Linq;
+using AchillesRest.Models.Authentications;
+using AchillesRest.Models.Enums;
+using AchillesRest.Services;
+using JsonFormatterPlus;
 using ReactiveUI;
 using Splat;
 
@@ -22,6 +28,57 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
         // RequestService.WhenAnyValue(x => x.SelectedRequest)
         //     .Where(x => x is not null)
         //     .ToProperty(this, x => x.SelRequest, out selRequest);
+
+        // Request Manager VM - Configure the Response
+        RequestService.WhenAnyValue(x => x.ResponseMessage)
+            .WhereNotNull()
+            .Subscribe(OnNewResponse);
+
+
+        // For mantain the Authentication properly. - Collection ViewModel
+        RequestService.WhenAnyValue(x => x.SelectedCollection!.SelectedAuthType)
+            .DistinctUntilChanged()
+            .Subscribe(authType =>
+            {
+                IAuthentication? newAuth;
+                switch (authType)
+                {
+                    case null:
+                        newAuth = null;
+                        break;
+                    case EnumAuthTypes.None:
+                        newAuth = null;
+                        break;
+                    case EnumAuthTypes.Basic:
+                        newAuth = new BasicAuthentication();
+                        break;
+                    case EnumAuthTypes.Bearer:
+                        newAuth = new BearerAuthentication();
+                        break;
+                    case EnumAuthTypes.Digest:
+                        newAuth = new DigestAuthentication();
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid authentication type.");
+                }
+
+                if (RequestService.SelectedCollection != null)
+                {
+                    if (RequestService.SelectedCollection.Authentication?.GetType() != newAuth?.GetType())
+                    {
+                        RequestService.SelectedCollection.Authentication = newAuth;
+                    }
+                }
+            });
+    }
+
+    private async void OnNewResponse(HttpResponseMessage x)
+    {
+        var response =  await x.Content.ReadAsStringAsync();
+        string formattedJson = JsonFormatter.Format(response);
+        RequestService.ResponseContent = formattedJson;
+
+
     }
 
     public ViewModelBase MenuCollectionVm { get; } = new MenuCollectionsViewModel();

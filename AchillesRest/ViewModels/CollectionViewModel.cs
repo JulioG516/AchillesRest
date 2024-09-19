@@ -4,7 +4,6 @@ using System.Linq;
 using AchillesRest.Models;
 using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
-using Avalonia.Media;
 using ReactiveUI;
 
 namespace AchillesRest.ViewModels;

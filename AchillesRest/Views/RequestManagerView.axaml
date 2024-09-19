@@ -46,7 +46,7 @@
                      Text="{Binding RequestService.SelectedRequest.Endpoint, 
                      FallbackValue=''}"
                      Margin="0, 0, 15, 0" />
-            <Button Grid.Column="2">OK</Button>
+            <Button Grid.Column="2" Command="{Binding SendRequestCommand}">Send</Button>
         </Grid>
 
     </Grid>

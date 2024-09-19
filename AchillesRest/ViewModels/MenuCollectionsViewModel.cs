@@ -178,13 +178,18 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
                 {
                     new()
                     {
+                        Action = EnumActions.GET, Name = "Get Todos",
+                        Endpoint = "https://jsonplaceholder.typicode.com/todos/1"
+                    },
+                    new()
+                    {
                         Action = EnumActions.DELETE, Name = "Delete Action", Endpoint = "http://localhost:5200/test/get"
                     },
                     new()
                     {
                         Action = EnumActions.OPTIONS, Name = "Options Aqui",
                         Endpoint = "http://localhost:5200/test/options"
-                    },
+                    },           
                     new()
                     {
                         Action = EnumActions.POST, Name = "Post Json With something",
