@@ -183,7 +183,8 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
                     },
                     new()
                     {
-                        Action = EnumActions.DELETE, Name = "Delete Action", Endpoint = "http://localhost:5200/test/get"
+                        Action = EnumActions.GET, Name = "Get Jobs",
+                        Endpoint = "https://api.placeholderjson.dev/job-listings"
                     },
                     new()
                     {

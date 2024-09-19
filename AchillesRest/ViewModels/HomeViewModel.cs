@@ -30,9 +30,9 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
         //     .ToProperty(this, x => x.SelRequest, out selRequest);
 
         // Request Manager VM - Configure the Response
-        RequestService.WhenAnyValue(x => x.ResponseMessage)
-            .WhereNotNull()
-            .Subscribe(OnNewResponse);
+        // RequestService.WhenAnyValue(x => x.ResponseMessage)
+        //     .WhereNotNull()
+        //     .Subscribe(OnNewResponse);
 
 
         // For mantain the Authentication properly. - Collection ViewModel
@@ -72,14 +72,14 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
             });
     }
 
-    private async void OnNewResponse(HttpResponseMessage x)
-    {
-        var response =  await x.Content.ReadAsStringAsync();
-        string formattedJson = JsonFormatter.Format(response);
-        RequestService.ResponseContent = formattedJson;
-
-
-    }
+    // private async void OnNewResponse(HttpResponseMessage x)
+    // {
+    //     var response =  await x.Content.ReadAsStringAsync();
+    //     string formattedJson = JsonFormatter.Format(response);
+    //     RequestService.ResponseContent = formattedJson;
+    //
+    //
+    // }
 
     public ViewModelBase MenuCollectionVm { get; } = new MenuCollectionsViewModel();
     public ViewModelBase RequestManagerVm { get; } = new RequestManagerViewModel();

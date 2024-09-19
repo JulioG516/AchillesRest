@@ -38,52 +38,7 @@ public class RequestManagerViewModel : ViewModelBase
 
     private async Task SendRequest()
     {
-        if (RequestService.ResponseContent != null)
-            RequestService.ResponseContent = null;
-
-        RequestService.IsLoading = true;
-
-        var request = RequestService.SelectedRequest;
-
-        if (request == null)
-            return;
-
-        HttpClient httpClient = new HttpClient()
-            { };
-
-        HttpMethod method = request.Action switch
-        {
-            EnumActions.GET => HttpMethod.Get,
-            EnumActions.POST => HttpMethod.Post,
-            EnumActions.DELETE => HttpMethod.Delete,
-            EnumActions.HEAD => HttpMethod.Head,
-            EnumActions.PUT => HttpMethod.Put,
-            EnumActions.PATCH => HttpMethod.Patch,
-            EnumActions.OPTIONS => HttpMethod.Options,
-            _ => throw new InvalidOperationException("Invalid Request Action.")
-        };
-
-        var requestMessage = new HttpRequestMessage(method, request.Endpoint!);
-
-        //TODO Call in thread so does not block UI.
-        try
-        {
-            var responseMessage = await httpClient.SendAsync(requestMessage);
-            
-            RequestService.ResponseMessage = responseMessage ;
-        }
-        catch (HttpRequestException e)
-        {
-            RequestService.ResponseContent = e.Message;
-        }
-        catch (SocketException e)
-        {
-            RequestService.ResponseContent = e.Message;
-        }
-        finally
-        {
-            RequestService.IsLoading = false;
-        }
+        await RequestService.SendRequest();
     }
 
 
