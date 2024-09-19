@@ -5,16 +5,46 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AchillesRest.Views.CollectionManagerView"
              xmlns:vm="using:AchillesRest.ViewModels"
+             xmlns:authmodels="using:AchillesRest.Models.Authentications"
+             xmlns:converters="clr-namespace:AchillesRest.Converters"
              x:DataType="vm:CollectionManagerViewModel">
 
     <Design.DataContext>
         <vm:CollectionManagerViewModel />
     </Design.DataContext>
 
+    <UserControl.Resources>
+        <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
+    </UserControl.Resources>
+
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="authmodels:BasicAuthentication">
+            <StackPanel>
+                <TextBox Text="{Binding Username}" Watermark="Username" Margin="0, 0, 0, 10" />
+                <TextBox Text="{Binding Password}" Watermark="Password" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="authmodels:BearerAuthentication">
+            <StackPanel>
+                <TextBox Text="{Binding Token}" Watermark="Token" />
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate DataType="authmodels:DigestAuthentication">
+            <StackPanel>
+                <TextBox Text="{Binding Username}"
+                         Watermark="Username"
+                         Margin="0, 0, 0, 10" />
+                <TextBox Text="{Binding Password}" Watermark="Password" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
     <UserControl.Styles>
         <Styles>
             <Style Selector="TabItem">
-                
+                <Setter Property="FontSize" Value="14"></Setter>
                 <!--  Selected state  -->
                 <!--  We don't use selector to PART_LayoutRoot, so developer can override selected item background with TabStripItem.Background  -->
                 <Style Selector="^:selected">
@@ -23,7 +53,7 @@
                 </Style>
                 <Style Selector="^:selected /template/ Border#PART_SelectedPipe">
                     <Setter Property="IsVisible" Value="True" />
-                    <Setter Property="Background" Value="{DynamicResource TreeViewItemBackgroundPointerOver}"/>
+                    <Setter Property="Background" Value="GhostWhite" />
                 </Style>
             </Style>
         </Styles>
@@ -40,8 +70,23 @@
         <Grid Grid.Row="1">
             <TabControl>
                 <TabItem Header="Description">
+
                 </TabItem>
-                <TabItem Header="Authorization">
+                <TabItem Header="Authorization" IsSelected="True">
+                    <Grid RowDefinitions="50, *">
+                        <ComboBox Grid.Row="0" MinWidth="120"
+                                  SelectedItem="{Binding RequestService.SelectedCollection.SelectedAuthType, FallbackValue=''}"
+                                  ItemsSource="{Binding Authentications}"
+                                  DisplayMemberBinding="{Binding Converter={StaticResource EnumToStringConverter}}"
+                                  Margin="15, 15, 15, 20" />
+
+
+                        <ContentControl Grid.Row="1"
+                                        Content="{Binding RequestService.SelectedCollection.Authentication, FallbackValue=''}" />
+
+                    </Grid>
+
+
                 </TabItem>
             </TabControl>
         </Grid>

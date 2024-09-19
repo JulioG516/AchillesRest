@@ -39,7 +39,7 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
             .Where(x => x is not null)
             .Subscribe(x =>
             {
-                if (x.GetType() == typeof(CollectionViewModel))
+                if (x!.GetType() == typeof(CollectionViewModel))
                 {
                     RequestService.SelectedRequest = null;
                     RequestService.SelectedCollection = x as CollectionViewModel;
@@ -119,6 +119,9 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
         {
             // Remove the request from the collection
             collection.Requests!.Remove(request);
+
+            if (RequestService.SelectedRequest == request)
+                RequestService.SelectedRequest = null;
         }
     }
 

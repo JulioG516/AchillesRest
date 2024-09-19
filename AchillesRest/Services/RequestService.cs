@@ -1,4 +1,5 @@
-﻿using AchillesRest.ViewModels;
+﻿using AchillesRest.Models.Enums;
+using AchillesRest.ViewModels;
 using Microsoft.VisualBasic;
 using ReactiveUI;
 
@@ -20,5 +21,11 @@ public class RequestService : ReactiveObject
     {
         get => _selectedCollection;
         set => this.RaiseAndSetIfChanged(ref _selectedCollection, value);
+    }
+    
+
+    public override string ToString()
+    {
+        return $"Colection: {SelectedCollection}\nRequest: {SelectedRequest}";
     }
 }
