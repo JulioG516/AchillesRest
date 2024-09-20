@@ -26,7 +26,7 @@ public class RequestService : ReactiveObject
 
             if (_selectedRequest != null && _responses.TryGetValue(_selectedRequest, out var responseContent))
             {
-                Response!.Content = responseContent!.Content;
+                Response = responseContent;
             }
             else
             {

@@ -188,8 +188,8 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
                     },
                     new()
                     {
-                        Action = EnumActions.OPTIONS, Name = "Options Aqui",
-                        Endpoint = "http://localhost:5200/test/options"
+                        Action = EnumActions.GET, Name = "Boarding Passes",
+                        Endpoint = "https://api.placeholderjson.dev/boarding-pass"
                     },           
                     new()
                     {
