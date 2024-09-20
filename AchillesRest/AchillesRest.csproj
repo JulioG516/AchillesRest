@@ -26,6 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Helpers\" />
+      <Folder Include="Behaviors\" />
     </ItemGroup>
 </Project>

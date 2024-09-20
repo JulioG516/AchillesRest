@@ -13,12 +13,12 @@ namespace AchillesRest.Services;
 
 public class RequestService : ReactiveObject
 {
-    private Dictionary<RequestViewModel, AchillesHttpResponse?> _responses = new();
+    private readonly Dictionary<RequestViewModel, AchillesHttpResponse?> _responses = new();
 
     private RequestViewModel? _selectedRequest;
 
     public RequestViewModel? SelectedRequest
-    {
+    { 
         get => _selectedRequest;
         set
         {
@@ -79,8 +79,7 @@ public class RequestService : ReactiveObject
 
     public async Task SendRequest()
     {
-        if (Response == null)
-            Response = new AchillesHttpResponse();
+        Response ??= new AchillesHttpResponse();
 
 
         if (Response?.Content != null)
@@ -112,11 +111,11 @@ public class RequestService : ReactiveObject
         try
         {
             var responseMessage = await httpClient.SendAsync(requestMessage);
-            Response.HttpMessage = responseMessage;
+            Response!.HttpMessage = responseMessage;
 
             var response = await responseMessage.Content.ReadAsStringAsync();
             string formattedJson = JsonFormatter.Format(response);
-            Response.Content = formattedJson;
+            Response!.Content = formattedJson;
 
 
             // var responseContent = await responseMessage.Content.ReadAsStringAsync();
@@ -126,27 +125,22 @@ public class RequestService : ReactiveObject
         }
         catch (HttpRequestException e)
         {
-            Response.Content = e.Message;
+            Response!.Content = e.Message;
         }
         catch (SocketException e)
         {
-            Response.Content = e.Message;
+            Response!.Content = e.Message;
         }
         finally
         {
             IsLoading = false;
 
-            if (request != null)
-            {
-                if (string.IsNullOrEmpty(Response.Content))
-                    throw new InvalidCastException();
-                _responses[request] = Response;
-            }
+            _responses[request] = Response;
         }
     }
 
     public override string ToString()
     {
-        return $"Colection: {SelectedCollection}\nRequest: {SelectedRequest}";
+        return $"Collection: {SelectedCollection}\nRequest: {SelectedRequest}";
     }
 }
