@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive.Linq;
+using AchillesRest.Models.Enums;
 using AchillesRest.Services;
 using ReactiveUI;
 using Splat;
@@ -15,7 +18,10 @@ public class RequestDetailsViewModel : ViewModelBase
     {
         RequestService = Locator.Current.GetService<RequestService>()!;
         _requests = new Dictionary<RequestViewModel, int?>();
-
+        
+        Authentications =
+            new ObservableCollection<EnumAuthTypes>(Enum.GetValues(typeof(EnumAuthTypes)).Cast<EnumAuthTypes>());
+        
         this.WhenAnyValue(x => x.RequestService.SelectedRequest)
             .WhereNotNull()
             .DistinctUntilChanged()
@@ -24,8 +30,9 @@ public class RequestDetailsViewModel : ViewModelBase
 
     public RequestService RequestService { get; }
 
+    public ObservableCollection<EnumAuthTypes> Authentications { get; }
+    
     private int? _selectedTab;
-
     public int? SelectedTab
     {
         get => _selectedTab;

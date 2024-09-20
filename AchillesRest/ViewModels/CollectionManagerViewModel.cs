@@ -15,9 +15,12 @@ public class CollectionManagerViewModel : ViewModelBase
     public CollectionManagerViewModel()
     {
         Authentications =
-            new ObservableCollection<EnumAuthTypes>(Enum.GetValues(typeof(EnumAuthTypes)).Cast<EnumAuthTypes>());
+            new ObservableCollection<EnumAuthTypes>(Enum.GetValues(typeof(EnumAuthTypes))
+                .Cast<EnumAuthTypes>());
+        Authentications.Remove(EnumAuthTypes.InheritFromParent);
 
-        SelectedAuthentication = new BasicAuthentication();
+        
+        
         EditDescriptionMdCommand = ReactiveCommand.Create(EditDescriptionMd);
         ExitEditDescriptionMdCommand = ReactiveCommand.Create(ExitEditDescriptionMd);
 
@@ -38,16 +41,9 @@ public class CollectionManagerViewModel : ViewModelBase
 
     public RequestService RequestService { get; }
 
-    private IAuthentication? _selectedAuthentication;
-
-    public IAuthentication? SelectedAuthentication
-    {
-        get => _selectedAuthentication;
-        set => this.RaiseAndSetIfChanged(ref _selectedAuthentication, value);
-    }
-
+    public ObservableCollection<EnumAuthTypes> Authentications { get; }
+    
     private bool _inEditDescriptionMode;
-
     public bool InEditDescriptionMode
     {
         get => _inEditDescriptionMode;
@@ -67,6 +63,4 @@ public class CollectionManagerViewModel : ViewModelBase
     {
         InEditDescriptionMode = false;
     }
-
-    public ObservableCollection<EnumAuthTypes> Authentications { get; }
 }

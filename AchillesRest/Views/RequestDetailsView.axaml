@@ -5,11 +5,17 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AchillesRest.Views.RequestDetailsView"
              xmlns:vm="using:AchillesRest.ViewModels"
-             x:DataType="vm:RequestDetailsViewModel">
+             x:DataType="vm:RequestDetailsViewModel"
+             xmlns:converters="clr-namespace:AchillesRest.Converters"
+             >
 
     <Design.DataContext>
         <vm:RequestDetailsViewModel />
     </Design.DataContext>
+    
+    <UserControl.Resources>
+        <converters:EnumToStringConverter x:Key="EnumToStringConverter"/>
+    </UserControl.Resources>
 
     <UserControl.Styles>
         <Styles>
@@ -28,14 +34,25 @@
             </Style>
         </Styles>
     </UserControl.Styles>
-    
+
     <Grid>
         <TabControl SelectedIndex="{Binding SelectedTab}">
             <TabItem Header="Query Params">
 
             </TabItem>
             <TabItem Header="Authorization">
+                <Grid RowDefinitions="50, *">
+                    <ComboBox Grid.Row="0" MinWidth="120"
+                              SelectedItem="{Binding RequestService.SelectedRequest.SelectedAuthType, FallbackValue=''}"
+                              ItemsSource="{Binding Authentications}"
+                              DisplayMemberBinding="{Binding Converter={StaticResource EnumToStringConverter}}"
+                              Margin="15, 15, 15, 20" />
 
+
+                    <ContentControl Grid.Row="1"
+                                    Content="{Binding RequestService.SelectedRequest.Authentication, FallbackValue=''}" />
+
+                </Grid>
             </TabItem>
             <TabItem Header="Headers">
 

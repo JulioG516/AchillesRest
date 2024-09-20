@@ -33,41 +33,41 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
         //     .Subscribe(OnNewResponse);
 
 
-        // For mantain the Authentication properly. - Collection ViewModel
-        RequestService.WhenAnyValue(x => x.SelectedCollection!.SelectedAuthType)
-            .DistinctUntilChanged()
-            .Subscribe(authType =>
-            {
-                IAuthentication? newAuth;
-                switch (authType)
-                {
-                    case null:
-                        newAuth = null;
-                        break;
-                    case EnumAuthTypes.None:
-                        newAuth = null;
-                        break;
-                    case EnumAuthTypes.Basic:
-                        newAuth = new BasicAuthentication();
-                        break;
-                    case EnumAuthTypes.Bearer:
-                        newAuth = new BearerAuthentication();
-                        break;
-                    case EnumAuthTypes.Digest:
-                        newAuth = new DigestAuthentication();
-                        break;
-                    default:
-                        throw new ArgumentException("Invalid authentication type.");
-                }
-
-                if (RequestService.SelectedCollection != null)
-                {
-                    if (RequestService.SelectedCollection.Authentication?.GetType() != newAuth?.GetType())
-                    {
-                        RequestService.SelectedCollection.Authentication = newAuth;
-                    }
-                }
-            });
+        // // For mantain the Authentication properly. - Collection ViewModel
+        // RequestService.WhenAnyValue(x => x.SelectedCollection!.SelectedAuthType)
+        //     .DistinctUntilChanged()
+        //     .Subscribe(authType =>
+        //     {
+        //         IAuthentication? newAuth;
+        //         switch (authType)
+        //         {
+        //             case null:
+        //                 newAuth = null;
+        //                 break;
+        //             case EnumAuthTypes.None:
+        //                 newAuth = null;
+        //                 break;
+        //             case EnumAuthTypes.Basic:
+        //                 newAuth = new BasicAuthentication();
+        //                 break;
+        //             case EnumAuthTypes.Bearer:
+        //                 newAuth = new BearerAuthentication();
+        //                 break;
+        //             case EnumAuthTypes.Digest:
+        //                 newAuth = new DigestAuthentication();
+        //                 break;
+        //             default:
+        //                 throw new ArgumentException("Invalid authentication type.");
+        //         }
+        //
+        //         if (RequestService.SelectedCollection != null)
+        //         {
+        //             if (RequestService.SelectedCollection.Authentication?.GetType() != newAuth?.GetType())
+        //             {
+        //                 RequestService.SelectedCollection.Authentication = newAuth;
+        //             }
+        //         }
+        //     });
     }
 
     public ViewModelBase MenuCollectionVm { get; } = new MenuCollectionsViewModel();

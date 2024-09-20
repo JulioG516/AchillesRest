@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Sockets;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using AchillesRest.Models;
+using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
 using AchillesRest.ViewModels;
 using JsonFormatterPlus;
@@ -13,12 +15,91 @@ namespace AchillesRest.Services;
 
 public class RequestService : ReactiveObject
 {
+    public RequestService()
+    {
+        // For mantain the Authentication properly. - Collection ViewModel
+        this.WhenAnyValue(x => x.SelectedCollection!.SelectedAuthType)
+            .DistinctUntilChanged()
+            .Subscribe(authType =>
+            {
+                IAuthentication? newAuth;
+                switch (authType)
+                {
+                    case null:
+                        newAuth = null;
+                        break;
+                    case EnumAuthTypes.None:
+                        newAuth = null;
+                        break;
+                    case EnumAuthTypes.Basic:
+                        newAuth = new BasicAuthentication();
+                        break;
+                    case EnumAuthTypes.Bearer:
+                        newAuth = new BearerAuthentication();
+                        break;
+                    case EnumAuthTypes.Digest:
+                        newAuth = new DigestAuthentication();
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid authentication type.");
+                }
+
+                if (SelectedCollection != null)
+                {
+                    if (SelectedCollection.Authentication?.GetType() != newAuth?.GetType())
+                    {
+                        SelectedCollection.Authentication = newAuth;
+                    }
+                }
+            });
+
+        //
+        this.WhenAnyValue(x => x.SelectedRequest!.SelectedAuthType)
+            .DistinctUntilChanged()
+            .Subscribe(authType =>
+            {
+                IAuthentication? newAuth;
+                switch (authType)
+                {
+                    case null:
+                        newAuth = null;
+                        break;
+                    case EnumAuthTypes.None:
+                        newAuth = null;
+                        break;
+                    case EnumAuthTypes.Basic:
+                        newAuth = new BasicAuthentication();
+                        break;
+                    case EnumAuthTypes.Bearer:
+                        newAuth = new BearerAuthentication();
+                        break;
+                    case EnumAuthTypes.Digest:
+                        newAuth = new DigestAuthentication();
+                        break;
+                    case EnumAuthTypes.InheritFromParent:
+                        newAuth = new BasicAuthentication();
+                        break;
+                    default:
+                        throw new ArgumentException("Invalid authentication type.");
+                }
+
+                if (SelectedRequest != null)
+                {
+                    if (SelectedRequest.Authentication?.GetType() != newAuth?.GetType())
+                    {
+                        SelectedRequest.Authentication = newAuth;
+                    }
+                }
+            });
+    }
+
+
     private readonly Dictionary<RequestViewModel, AchillesHttpResponse?> _responses = new();
 
     private RequestViewModel? _selectedRequest;
 
     public RequestViewModel? SelectedRequest
-    { 
+    {
         get => _selectedRequest;
         set
         {
@@ -50,14 +131,15 @@ public class RequestService : ReactiveObject
         get => _response;
         set => this.RaiseAndSetIfChanged(ref _response, value);
     }
-    
+
     private bool _isLoading;
+
     public bool IsLoading
     {
         get => _isLoading;
         set => this.RaiseAndSetIfChanged(ref _isLoading, value);
     }
-    
+
     public async Task SendRequest()
     {
         Response ??= new AchillesHttpResponse();

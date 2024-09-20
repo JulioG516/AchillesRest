@@ -1,5 +1,6 @@
 ﻿using System;
 using AchillesRest.Models;
+using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
 using ReactiveUI;
 
@@ -34,7 +35,6 @@ public class RequestViewModel : ViewModelBase
     }
 
     private string? _generatedCode;
-
     public string? GeneratedCode
     {
         get => _generatedCode;
@@ -62,6 +62,23 @@ public class RequestViewModel : ViewModelBase
                 var response = await client.SendAsync(requestMessage);";
     }
 
+    
+    
+    private IAuthentication? _authentication;
+    public IAuthentication? Authentication
+    {
+        get => _authentication;
+        set => this.RaiseAndSetIfChanged(ref _authentication, value);
+    }
+    
+    private EnumAuthTypes? _selectedAuthType;
+    public EnumAuthTypes? SelectedAuthType
+    {
+        get => _selectedAuthType;
+        set => this.RaiseAndSetIfChanged(ref _selectedAuthType, value);
+    }
+
+    
     public RequestViewModel()
     {
     }
@@ -71,7 +88,9 @@ public class RequestViewModel : ViewModelBase
         Name = request.Name;
         Action = request.Action;
         Endpoint = request.Endpoint;
-
+        SelectedAuthType = request.SelectedAuthType;
+        Authentication = request.Authentication;
+        
         this.WhenAnyValue(x => x.Action, x
                 => x.Endpoint)
             .Subscribe(_ => UpdateGeneratedCode());

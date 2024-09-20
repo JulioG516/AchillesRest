@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using AchillesRest.Helpers;
 using AchillesRest.Models.Enums;
 using Avalonia.Data.Converters;
 
@@ -9,8 +10,17 @@ public class EnumToStringConverter : IValueConverter
 {
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        return value?.ToString() ?? string.Empty;
+        if (value == null)
+        {
+            return string.Empty;
+        }
 
+        if (value.GetType().IsEnum)
+        {
+            return ((Enum)value).GetDescriptionAttribute(typeof(EnumAuthTypes));
+        }
+
+        return value.ToString();
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
