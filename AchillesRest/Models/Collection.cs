@@ -11,4 +11,6 @@ public class Collection
 
     public IAuthentication? Authentication { get; set; }
     public EnumAuthTypes? SelectedAuthType { get; set; } = EnumAuthTypes.None;
+
+    public string? Description { get; set; }
 }

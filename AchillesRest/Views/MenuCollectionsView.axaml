@@ -15,7 +15,7 @@
     <Panel>
         <Grid RowDefinitions="25,*, Auto" x:Name="Root">
 
-            <Grid ColumnDefinitions="20, *" Grid.Row="0" Margin="5, 5, 0, 5">
+            <Grid ColumnDefinitions="20, *" Grid.Row="0" Margin="10, 5, 0, 5">
                 <Button Grid.Column="0" Width="20" Height="20"
                         ToolTip.Tip="Create a new collection."
                         Command="{Binding CreateCollectionCommand}">
@@ -31,7 +31,7 @@
                     <TextBox.InnerLeftContent>
                         <PathIcon Data="{StaticResource SearchRegular}"
                                   Margin="5, 0, 0, 0"
-                                  Foreground="White" Width="20" Height="20" />
+                                  Foreground="White" Width="15" Height="15"/>
                     </TextBox.InnerLeftContent>
                 </TextBox>
 

@@ -2,6 +2,7 @@
 using AchillesRest.Models;
 using AchillesRest.Models.Enums;
 using ReactiveUI;
+// ReSharper disable NonReadonlyMemberInGetHashCode
 
 namespace AchillesRest.ViewModels;
 

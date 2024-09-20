@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reactive;
-using AchillesRest.ViewModels;
 using ReactiveUI;
 
 namespace AchillesRest.ViewModels;

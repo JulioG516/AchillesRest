@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Net.Http;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using AchillesRest.Models;
@@ -173,7 +172,9 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
         {
             new(new Collection
             {
-                Name = "Col 1.",
+                Name = "Api Col 1",
+                Description =
+                    "# API Collection  - Example API\n\n## Description\nLorem ipsum odor amet, consectetuer adipiscing elit. Mauris aptent fames blandit potenti metus per turpis. Dictumst tortor accumsan cursus gravida laoreet ipsum sit. Rhoncus orci vestibulum varius eleifend; adipiscing taciti imperdiet sit. Justo cubilia lectus duis facilisis sagittis netus. Scelerisque congue senectus hac sed imperdiet hendrerit.\n\nFringilla natoque at mus semper ullamcorper amet taciti. Nec ligula donec euismod leo nisi accumsan. Inceptos facilisi cubilia scelerisque phasellus dapibus? Mus mattis fermentum donec accumsan ornare molestie eget vel. Proin porttitor praesent faucibus id laoreet rhoncus semper? Lacus hac diam sodales nisl mollis morbi nunc. Ut felis congue vitae inceptos, bibendum erat at mi. Amet suscipit aptent ridiculus amet taciti molestie porttitor.\n\nErat mollis eros magna curabitur dapibus hac integer senectus. Libero interdum libero integer bibendum ipsum phasellus curae. Massa lobortis cubilia mi nisl posuere suscipit. Augue fames ut natoque feugiat faucibus hac auctor nostra. Aliquam consequat posuere eu tempus nullam quisque. Taciti imperdiet magna vehicula vulputate massa curae congue rhoncus.\n\nDignissim nec conubia viverra; lectus feugiat ad. Eleifend dapibus eget fusce ridiculus viverra gravida. Feugiat magna fames id laoreet odio. Torquent vel blandit nam parturient a natoque lorem. Finibus integer integer dis aliquet sapien. Elementum mus dictumst facilisis lectus eu scelerisque vel magna mi. Suspendisse neque penatibus nascetur facilisi ex. Iaculis a dictumst rutrum penatibus eget efficitur sit.\n\nOrci dolor leo accumsan, ac curabitur tempus. Habitasse torquent nulla tellus leo torquent; tempus at sociosqu. Lacinia risus risus semper netus ad; proin id. Platea lacus interdum imperdiet felis commodo turpis aliquam. Sed felis phasellus maximus orci iaculis maecenas. Finibus ligula ultricies volutpat sed in taciti. Parturient primis lacus urna auctor laoreet. Ante ridiculus orci egestas in molestie eros ornare.\n\n",
                 Requests = new List<Request>
                 {
                     new()
@@ -190,7 +191,7 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
                     {
                         Action = EnumActions.GET, Name = "Boarding Passes",
                         Endpoint = "https://api.placeholderjson.dev/boarding-pass"
-                    },           
+                    },
                     new()
                     {
                         Action = EnumActions.POST, Name = "Post Json With something",
@@ -200,7 +201,9 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
             }),
             new(new Collection
             {
-                Name = "Col 2.",
+                Name = "Api Col 2",
+                Description =
+                    "# API Collection 2 \n\n## Example API\n\n\n\n## Description\n\nLorem ipsum odor amet, consectetuer adipiscing elit. Enim efficitur magna justo pharetra etiam placerat vel odio. Penatibus dapibus nascetur taciti parturient, pellentesque scelerisque metus. Penatibus id hac dolor hac class risus; id potenti et. Potenti luctus erat nullam semper netus porttitor sed integer suspendisse. Dis libero at convallis tempus dis efficitur ipsum. Purus ad eros blandit; nec interdum mollis. Felis lorem pharetra placerat faucibus consequat risus donec neque nibh. Sit dignissim inceptos tellus vivamus gravida dictumst consectetur ultricies nisi.\n\nLeo netus iaculis id ac lacinia morbi. Erat velit sem libero inceptos volutpat neque. Etiam ipsum eros rhoncus, habitant tortor porttitor fusce. Placerat morbi luctus augue imperdiet diam mattis class. Egestas fusce magnis ridiculus in et venenatis. Dolor semper magna porta aptent integer fusce ut. Fermentum proin ad maximus, sit scelerisque duis. Elit posuere eleifend ultrices aliquam ad ultricies molestie placerat ante.",
                 Requests = new List<Request>
                 {
                     new()

@@ -21,8 +21,8 @@
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.0"/>
         <PackageReference Include="Avalonia.ReactiveUI" Version="11.1.0"/>
         <PackageReference Include="Avalonia.Xaml.Interactions" Version="11.1.0.4" />
-        <PackageReference Include="AvaloniaEdit.TextMate" Version="11.1.0" />
         <PackageReference Include="JsonFormatterPlus" Version="1.0.2" />
+        <PackageReference Include="Markdown.Avalonia" Version="11.0.2" />
     </ItemGroup>
 
     <ItemGroup>

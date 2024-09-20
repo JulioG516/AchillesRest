@@ -6,10 +6,7 @@
              x:Class="AchillesRest.Views.HomeView"
              xmlns:views="using:AchillesRest.Views"
              xmlns:vm="using:AchillesRest.ViewModels"
-             x:DataType="vm:HomeViewModel"
-             xmlns:avaloniaedit="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
-             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-             xmlns:behaviors="clr-namespace:AchillesRest.Behaviors">
+             x:DataType="vm:HomeViewModel">
 
     <Design.DataContext>
         <vm:HomeViewModel />
@@ -48,49 +45,8 @@
 
                     <GridSplitter Grid.Column="1" Background="DimGray" ResizeDirection="Columns" />
 
-                    <Panel Grid.Column="2">
-                        <PathIcon Data="{StaticResource LoadingRegular}" IsVisible="{Binding RequestService.IsLoading}">
-                            <PathIcon.Styles>
-                                <Style Selector="PathIcon">
-                                    <Style.Animations>
-                                        <Animation Duration="0:0:3" IterationCount="INFINITE">
-                                            <KeyFrame Cue="0%">
-                                                <Setter Property="Opacity" Value="0.0" />
-                                                <!-- <Setter Property="RotateTransform.Angle" Value="0.0"/> -->
-                                                <Setter Property="TranslateTransform.Y" Value="0" />
-                                            </KeyFrame>
-                                            <KeyFrame Cue="25%">
-                                                <Setter Property="Opacity" Value="1.0" />
-                                                <Setter Property="TranslateTransform.Y" Value="-5.0" />
-                                            </KeyFrame>
-                                            <KeyFrame Cue="50%">
-                                                <Setter Property="Opacity" Value="1.0" />
-                                                <Setter Property="TranslateTransform.Y" Value="-10.0" />
-                                            </KeyFrame>
-                                            <KeyFrame Cue="100%">
-                                                <Setter Property="Opacity" Value="1.0" />
-                                                <Setter Property="TranslateTransform.Y" Value="0.0" />
-                                            </KeyFrame>
-                                        </Animation>
-                                    </Style.Animations>
-                                </Style>
-
-
-                            </PathIcon.Styles>
-                        </PathIcon>
-
-                        <ScrollViewer>
-                            <SelectableTextBlock
-                                TextWrapping="Wrap"
-                                FontSize="16" IsVisible="{Binding !RequestService.IsLoading}"
-                                Text="{Binding RequestService.Response.Content, FallbackValue=''}"
-                                >
-
-
-                            </SelectableTextBlock>
-                        </ScrollViewer>
-
-                    </Panel>
+                    <!-- Response View  -->
+                    <views:ResponseView Grid.Column="2" DataContext="{Binding ResponseViewVm }" />
 
                 </Grid>
             </Grid>

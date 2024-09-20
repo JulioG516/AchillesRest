@@ -44,6 +44,14 @@ public class CollectionViewModel : ViewModelBase
     }
 
 
+    private string? _description;
+
+    public string? Description
+    {
+        get => _description;
+        set => this.RaiseAndSetIfChanged(ref _description, value);
+    }
+
     public CollectionViewModel(Collection collection)
     {
         Name = collection.Name;
@@ -52,10 +60,12 @@ public class CollectionViewModel : ViewModelBase
         );
         SelectedAuthType = collection.SelectedAuthType;
         Authentication = collection.Authentication;
+        Description = collection.Description;
     }
 
     public override string ToString()
     {
-        return $"Name:{Name}\nRequests Count:{Requests?.Count}\nAuthentication:{Authentication}";
+        return
+            $"Name: {Name}\nRequests Count: {Requests?.Count}\nAuthentication: {Authentication}\nDescription: {Description}";
     }
 }

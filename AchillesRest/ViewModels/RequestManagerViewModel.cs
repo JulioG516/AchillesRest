@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Sockets;
-using System.Text.Json;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AchillesRest.Models.Enums;
@@ -17,12 +16,15 @@ public class RequestManagerViewModel : ViewModelBase
 {
     public RequestManagerViewModel()
     {
+        RequestService = Locator.Current.GetService<RequestService>()!;
+
         Actions = new ObservableCollection<EnumActions>(Enum.GetValues(typeof(EnumActions)).Cast<EnumActions>());
         SelectedAction = EnumActions.GET;
-        SendRequestCommand = ReactiveCommand.CreateFromTask(SendRequest);
 
 
-        RequestService = Locator.Current.GetService<RequestService>()!;
+        var canExecute = this.WhenAnyValue(x => x.RequestService.SelectedRequest.Endpoint,
+            (edp) => !string.IsNullOrEmpty(edp));
+        SendRequestCommand = ReactiveCommand.CreateFromTask(SendRequest, canExecute);
     }
 
     public ObservableCollection<EnumActions> Actions { get; set; }

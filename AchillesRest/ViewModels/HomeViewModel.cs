@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Net.Http;
 using System.Reactive.Linq;
 using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
 using AchillesRest.Services;
-using JsonFormatterPlus;
 using ReactiveUI;
 using Splat;
 
@@ -72,18 +70,11 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
             });
     }
 
-    // private async void OnNewResponse(HttpResponseMessage x)
-    // {
-    //     var response =  await x.Content.ReadAsStringAsync();
-    //     string formattedJson = JsonFormatter.Format(response);
-    //     RequestService.ResponseContent = formattedJson;
-    //
-    //
-    // }
-
     public ViewModelBase MenuCollectionVm { get; } = new MenuCollectionsViewModel();
     public ViewModelBase RequestManagerVm { get; } = new RequestManagerViewModel();
     public ViewModelBase CollectionManagerVm { get; } = new CollectionManagerViewModel();
+    public ViewModelBase ResponseViewVm { get; } = new ResponseViewModel();
+
     public RequestService RequestService { get; } = null!;
 
     private RequestViewModel? _selectedRequest;
