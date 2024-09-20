@@ -4,9 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="150"
              x:Class="AchillesRest.Views.RequestManagerView"
-             xmlns:vm="using:AchillesRest.ViewModels"
              xmlns:converters="clr-namespace:AchillesRest.Converters"
-             x:DataType="vm:RequestManagerViewModel">
+             xmlns:vm="using:AchillesRest.ViewModels"
+             x:DataType="vm:RequestManagerViewModel"
+             
+             >
     <Design.DataContext>
         <vm:RequestManagerViewModel />
     </Design.DataContext>

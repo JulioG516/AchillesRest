@@ -75,6 +75,8 @@ public class HomeViewModel : ViewModelBase, IRoutableViewModel
     public ViewModelBase CollectionManagerVm { get; } = new CollectionManagerViewModel();
     public ViewModelBase ResponseViewVm { get; } = new ResponseViewModel();
 
+    public ViewModelBase RequestDetailsVm { get; } = new RequestDetailsViewModel();
+
     public RequestService RequestService { get; } = null!;
 
     private RequestViewModel? _selectedRequest;

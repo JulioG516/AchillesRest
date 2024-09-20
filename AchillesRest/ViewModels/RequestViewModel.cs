@@ -2,6 +2,7 @@
 using AchillesRest.Models;
 using AchillesRest.Models.Enums;
 using ReactiveUI;
+
 // ReSharper disable NonReadonlyMemberInGetHashCode
 
 namespace AchillesRest.ViewModels;
@@ -32,6 +33,35 @@ public class RequestViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _endpoint, value);
     }
 
+    private string? _generatedCode;
+
+    public string? GeneratedCode
+    {
+        get => _generatedCode;
+        set => this.RaiseAndSetIfChanged(ref _generatedCode, value);
+    }
+
+    private void UpdateGeneratedCode()
+    {
+        string method = Action switch
+        {
+            EnumActions.GET => "HttpMethod.Get",
+            EnumActions.POST => "HttpMethod.Post",
+            EnumActions.DELETE => "HttpMethod.Delete",
+            EnumActions.HEAD => "HttpMethod.Head",
+            EnumActions.PUT => "HttpMethod.Put",
+            EnumActions.PATCH => "HttpMethod.Patch",
+            EnumActions.OPTIONS => "HttpMethod.Options",
+            _ => throw new InvalidOperationException("Invalid Request Action.")
+        };
+
+        GeneratedCode = $@"
+                var client = new HttpClient();
+                var requestMessage = new HttpRequestMessage({method}, ""{Endpoint}"");
+                
+                var response = await client.SendAsync(requestMessage);";
+    }
+
     public RequestViewModel()
     {
     }
@@ -41,6 +71,10 @@ public class RequestViewModel : ViewModelBase
         Name = request.Name;
         Action = request.Action;
         Endpoint = request.Endpoint;
+
+        this.WhenAnyValue(x => x.Action, x
+                => x.Endpoint)
+            .Subscribe(_ => UpdateGeneratedCode());
     }
 
     protected bool Equals(RequestViewModel other)

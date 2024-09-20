@@ -1,0 +1,55 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AchillesRest.Views.RequestDetailsView"
+             xmlns:vm="using:AchillesRest.ViewModels"
+             x:DataType="vm:RequestDetailsViewModel">
+
+    <Design.DataContext>
+        <vm:RequestDetailsViewModel />
+    </Design.DataContext>
+
+    <UserControl.Styles>
+        <Styles>
+            <Style Selector="TabItem">
+                <Setter Property="FontSize" Value="14"></Setter>
+                <!--  Selected state  -->
+                <!--  We don't use selector to PART_LayoutRoot, so developer can override selected item background with TabStripItem.Background  -->
+                <Style Selector="^:selected">
+                    <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundSelected}" />
+                    <Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundSelected}" />
+                </Style>
+                <Style Selector="^:selected /template/ Border#PART_SelectedPipe">
+                    <Setter Property="IsVisible" Value="True" />
+                    <Setter Property="Background" Value="GhostWhite" />
+                </Style>
+            </Style>
+        </Styles>
+    </UserControl.Styles>
+    
+    <Grid>
+        <TabControl SelectedIndex="{Binding SelectedTab}">
+            <TabItem Header="Query Params">
+
+            </TabItem>
+            <TabItem Header="Authorization">
+
+            </TabItem>
+            <TabItem Header="Headers">
+
+            </TabItem>
+            <TabItem Header="Generated Code">
+                <SelectableTextBlock
+                    Text="{Binding RequestService.SelectedRequest.GeneratedCode,
+                 FallbackValue=''}">
+
+
+                </SelectableTextBlock>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+
+</UserControl>

@@ -5,13 +5,43 @@
              mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="400"
              x:Class="AchillesRest.Views.ResponseView"
              xmlns:vm="using:AchillesRest.ViewModels"
-             x:DataType="vm:ResponseViewModel">
+             x:DataType="vm:ResponseViewModel"
+             xmlns:converters="clr-namespace:AchillesRest.Converters">
 
     <Design.DataContext>
         <vm:ResponseViewModel />
     </Design.DataContext>
-    <Grid>
-        <Panel Grid.Column="0">
+
+    <UserControl.Resources>
+        <converters:StatusCodeToForegroundConverter x:Key="StatusCodeToForegroundConverter" />
+    </UserControl.Resources>
+
+    <Grid RowDefinitions="25, *">
+        <Panel Grid.Row="0"
+               IsVisible="{Binding RequestService.Response.HttpMessage, 
+                Converter={x:Static ObjectConverters.IsNotNull}}">
+            <Border CornerRadius="3.5" Background="Silver" BorderBrush="DimGray">
+                <TextBlock
+
+                    Text="{Binding RequestService.Response.HttpMessage.StatusCode, FallbackValue='' }"
+                    Classes.Success="{Binding RequestService.Response.HttpMessage.IsSuccessStatusCode, FallbackValue=''}">
+                    <TextBlock.Styles>
+
+                        <Style Selector="TextBlock.Success">
+                            <Setter Property="Foreground" Value="Red" />
+                        </Style>
+
+                        <Style Selector="TextBlock.Success">
+                            <Setter Property="Foreground" Value="LimeGreen" />
+                        </Style>
+                    </TextBlock.Styles>
+
+                </TextBlock>
+            </Border>
+
+
+        </Panel>
+        <Panel Grid.Row="1">
             <PathIcon Data="{StaticResource LoadingRegular}" IsVisible="{Binding RequestService.IsLoading}">
                 <PathIcon.Styles>
                     <Style Selector="PathIcon">

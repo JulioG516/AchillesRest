@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AchillesRest.Models.Enums;
@@ -22,7 +20,7 @@ public class RequestManagerViewModel : ViewModelBase
         SelectedAction = EnumActions.GET;
 
 
-        var canExecute = this.WhenAnyValue(x => x.RequestService.SelectedRequest.Endpoint,
+        var canExecute = this.WhenAnyValue(x => x.RequestService.SelectedRequest!.Endpoint,
             (edp) => !string.IsNullOrEmpty(edp));
         SendRequestCommand = ReactiveCommand.CreateFromTask(SendRequest, canExecute);
     }
