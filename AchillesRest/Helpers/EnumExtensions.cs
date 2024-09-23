@@ -14,7 +14,7 @@ public static class EnumExtensions
 
         if (info != null && info.CustomAttributes.Any())
         {
-            DescriptionAttribute descriptionAttribute = info.GetCustomAttribute<DescriptionAttribute>();
+            DescriptionAttribute? descriptionAttribute = info.GetCustomAttribute<DescriptionAttribute>();
             displayName = descriptionAttribute != null ? descriptionAttribute.Description : enumValue.ToString();
         }
         else

@@ -12,7 +12,7 @@
         xmlns:vm="using:AchillesRest.ViewModels"
         xmlns:achillesRest="clr-namespace:AchillesRest"
         Title="AchillesRest"
-        MinWidth="900" MinHeight="720 "
+        MinWidth="1200" MinHeight="720 "
         >
 
     <Design.DataContext>

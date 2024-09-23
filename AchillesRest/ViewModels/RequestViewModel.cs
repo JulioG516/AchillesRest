@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using AchillesRest.Models;
 using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
@@ -35,6 +37,7 @@ public class RequestViewModel : ViewModelBase
     }
 
     private string? _generatedCode;
+
     public string? GeneratedCode
     {
         get => _generatedCode;
@@ -62,23 +65,26 @@ public class RequestViewModel : ViewModelBase
                 var response = await client.SendAsync(requestMessage);";
     }
 
-    
-    
+
     private IAuthentication? _authentication;
+
     public IAuthentication? Authentication
     {
         get => _authentication;
         set => this.RaiseAndSetIfChanged(ref _authentication, value);
     }
-    
+
     private EnumAuthTypes? _selectedAuthType;
+
     public EnumAuthTypes? SelectedAuthType
     {
         get => _selectedAuthType;
         set => this.RaiseAndSetIfChanged(ref _selectedAuthType, value);
     }
 
-    
+
+    public ObservableCollection<Header> Headers { get; set; } = new ObservableCollection<Header>();
+
     public RequestViewModel()
     {
     }
@@ -90,7 +96,9 @@ public class RequestViewModel : ViewModelBase
         Endpoint = request.Endpoint;
         SelectedAuthType = request.SelectedAuthType;
         Authentication = request.Authentication;
-        
+
+        Headers = new ObservableCollection<Header>(request.Headers);
+
         this.WhenAnyValue(x => x.Action, x
                 => x.Endpoint)
             .Subscribe(_ => UpdateGeneratedCode());

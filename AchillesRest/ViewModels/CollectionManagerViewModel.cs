@@ -2,7 +2,6 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
-using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
 using AchillesRest.Services;
 using ReactiveUI;

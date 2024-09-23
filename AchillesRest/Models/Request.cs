@@ -1,4 +1,5 @@
-﻿using AchillesRest.Models.Authentications;
+﻿using System.Collections.Generic;
+using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
 
 namespace AchillesRest.Models;
@@ -10,6 +11,9 @@ public class Request
     public string? Endpoint { get; set; }
     public EnumAuthTypes? SelectedAuthType { get; set; } = EnumAuthTypes.None;
     public IAuthentication? Authentication { get; set; }
+
+    public List<Header> Headers { get; set; } = new List<Header>();
+
 
     // TODO:  Auth, Headers, Params
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Windows.Input;
 using AchillesRest.Models.Enums;
 using AchillesRest.Services;
 using ReactiveUI;
@@ -18,10 +19,12 @@ public class RequestDetailsViewModel : ViewModelBase
     {
         RequestService = Locator.Current.GetService<RequestService>()!;
         _requests = new Dictionary<RequestViewModel, int?>();
-        
+
+        AddHeaderCommand = ReactiveCommand.Create(AddHeader);
+
         Authentications =
             new ObservableCollection<EnumAuthTypes>(Enum.GetValues(typeof(EnumAuthTypes)).Cast<EnumAuthTypes>());
-        
+
         this.WhenAnyValue(x => x.RequestService.SelectedRequest)
             .WhereNotNull()
             .DistinctUntilChanged()
@@ -30,9 +33,17 @@ public class RequestDetailsViewModel : ViewModelBase
 
     public RequestService RequestService { get; }
 
+    public ICommand AddHeaderCommand { get; }
+
+    private void AddHeader()
+    {
+        RequestService.AddHeader();
+    }
+
     public ObservableCollection<EnumAuthTypes> Authentications { get; }
-    
+
     private int? _selectedTab;
+
     public int? SelectedTab
     {
         get => _selectedTab;

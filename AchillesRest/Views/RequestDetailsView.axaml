@@ -7,20 +7,21 @@
              xmlns:vm="using:AchillesRest.ViewModels"
              x:DataType="vm:RequestDetailsViewModel"
              xmlns:converters="clr-namespace:AchillesRest.Converters"
-             >
+             xmlns:models="clr-namespace:AchillesRest.Models">
 
     <Design.DataContext>
         <vm:RequestDetailsViewModel />
     </Design.DataContext>
-    
+
     <UserControl.Resources>
-        <converters:EnumToStringConverter x:Key="EnumToStringConverter"/>
+        <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
+        <converters:EnumEqualsInheritConverter x:Key="EnumEqualsInheritConverter" />
     </UserControl.Resources>
 
     <UserControl.Styles>
         <Styles>
             <Style Selector="TabItem">
-                <Setter Property="FontSize" Value="14"></Setter>
+                <Setter Property="FontSize" Value="14" />
                 <!--  Selected state  -->
                 <!--  We don't use selector to PART_LayoutRoot, so developer can override selected item background with TabStripItem.Background  -->
                 <Style Selector="^:selected">
@@ -49,14 +50,52 @@
                               Margin="15, 15, 15, 20" />
 
 
-                    <ContentControl Grid.Row="1"
-                                    Content="{Binding RequestService.SelectedRequest.Authentication, FallbackValue=''}" />
+                    <ContentControl
+                        IsVisible="{Binding RequestService.SelectedRequest.SelectedAuthType, 
+                        Converter= {StaticResource EnumEqualsInheritConverter}}"
+                        Grid.Row="1"
+                        Content="{Binding RequestService.SelectedRequest.Authentication, FallbackValue=''}" />
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Headers">
+            <TabItem Header="Headers" IsSelected="True">
+                <Grid RowDefinitions="50, *">
+                    <Panel Grid.Row="0">
+                        <!-- <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="0, 5, 0, 0" TextDecorations="Underline">Headers</TextBlock> -->
+
+                        <Button Command="{Binding AddHeaderCommand}" Content="New Header"></Button>
+
+                    </Panel>
+
+                    <ScrollViewer Grid.Row="1">
+                        <ItemsControl
+                            ItemsSource="{Binding RequestService.SelectedRequest.Headers,
+                                     FallbackValue=''}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="models:Header">
+                                    <Grid ColumnDefinitions="4*, 4*, 2*" Margin="0, 5, 0, 5">
+                                        <TextBox Grid.Column="0" Watermark="Key" Text="{Binding Key}" />
+                                        <TextBox Grid.Column="1" Watermark="Value"
+                                                 Text="{Binding Value}"
+                                                 Margin="5, 0, 0,0" />
+                                        <CheckBox Grid.Column="2"
+                                                  IsChecked="{Binding Enabled}" Margin="5, 0, 0,0"
+                                                  ToolTip.Tip="Enables or disables that header key-value pair." />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                </Grid>
+
 
             </TabItem>
+
+            <TabItem Header="Body">
+                <TextBlock Text="Body... #TODO" />
+            </TabItem>
+
             <TabItem Header="Generated Code">
                 <SelectableTextBlock
                     Text="{Binding RequestService.SelectedRequest.GeneratedCode,

@@ -38,7 +38,7 @@
             </Grid>
 
             <ScrollViewer Grid.Row="1">
-                <TreeView ItemsSource="{Binding Collections}"
+                <TreeView ItemsSource="{Binding RequestService.Collections}"
                           SelectedItem="{Binding  SelectedNode, Mode=TwoWay}"
                           >
                     <TreeView.DataTemplates>

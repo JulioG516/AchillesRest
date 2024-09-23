@@ -18,29 +18,29 @@
         <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
     </UserControl.Resources>
 
-    <UserControl.DataTemplates>
-        <DataTemplate DataType="authmodels:BasicAuthentication">
-            <StackPanel>
-                <TextBox Text="{Binding Username}" Watermark="Username" Margin="0, 0, 0, 10" />
-                <TextBox Text="{Binding Password}" Watermark="Password" />
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate DataType="authmodels:BearerAuthentication">
-            <StackPanel>
-                <TextBox Text="{Binding Token}" Watermark="Token" />
-            </StackPanel>
-        </DataTemplate>
-
-        <DataTemplate DataType="authmodels:DigestAuthentication">
-            <StackPanel>
-                <TextBox Text="{Binding Username}"
-                         Watermark="Username"
-                         Margin="0, 0, 0, 10" />
-                <TextBox Text="{Binding Password}" Watermark="Password" />
-            </StackPanel>
-        </DataTemplate>
-    </UserControl.DataTemplates>
+    <!-- <UserControl.DataTemplates> -->
+    <!--     <DataTemplate DataType="authmodels:BasicAuthentication"> -->
+    <!--         <StackPanel> -->
+    <!--             <TextBox Text="{Binding Username}" Watermark="Username" Margin="0, 0, 0, 10" /> -->
+    <!--             <TextBox Text="{Binding Password}" Watermark="Password" /> -->
+    <!--         </StackPanel> -->
+    <!--     </DataTemplate> -->
+    <!-- -->
+    <!--     <DataTemplate DataType="authmodels:BearerAuthentication"> -->
+    <!--         <StackPanel> -->
+    <!--             <TextBox Text="{Binding Token}" Watermark="Token" /> -->
+    <!--         </StackPanel> -->
+    <!--     </DataTemplate> -->
+    <!-- -->
+    <!--     <DataTemplate DataType="authmodels:DigestAuthentication"> -->
+    <!--         <StackPanel> -->
+    <!--             <TextBox Text="{Binding Username}" -->
+    <!--                      Watermark="Username" -->
+    <!--                      Margin="0, 0, 0, 10" /> -->
+    <!--             <TextBox Text="{Binding Password}" Watermark="Password" /> -->
+    <!--         </StackPanel> -->
+    <!--     </DataTemplate> -->
+    <!-- </UserControl.DataTemplates> -->
 
     <UserControl.Styles>
         <Styles>

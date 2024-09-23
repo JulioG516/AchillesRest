@@ -20,7 +20,7 @@ public class EnumToStringConverter : IValueConverter
             return ((Enum)value).GetDescriptionAttribute(typeof(EnumAuthTypes));
         }
 
-        return value.ToString();
+        return value.ToString() ?? string.Empty;
     }
 
     public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
