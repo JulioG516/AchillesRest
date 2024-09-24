@@ -2,11 +2,11 @@
 <!-- original syntax definition for Json by alek kowalczyk -->
 <!-- Modified by Julio Gabriel to use in AchillesRestClient. -->
 <SyntaxDefinition name="Json" extensions=".json" xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
-	<Color name="Bool" foreground="Blue" exampleText="true | false" />
+	<Color name="Bool" foreground="Ivory" exampleText="true | false" />
 	<Color name="Number" foreground="Red" exampleText="3.14" />
 	<Color name="String" foreground="LawnGreen" exampleText="" />
 	<Color name="Null" foreground="Yellow" exampleText="" />
-	<Color name="FieldName" foreground="Magenta" />
+	<Color name="FieldName" foreground="Plum" />
 	<Color name="Punctuation" foreground="White" />
 
 	<RuleSet name="String">

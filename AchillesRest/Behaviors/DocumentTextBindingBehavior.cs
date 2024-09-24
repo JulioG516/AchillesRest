@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Xaml.Interactivity;
 using AvaloniaEdit;
@@ -50,11 +51,26 @@ public class DocumentTextBindingBehavior : Behavior<TextEditor>
 
     private void TextPropertyChanged(string text)
     {
+        if (text == null)
+        {
+            _textEditor.CaretOffset = 0;
+            _textEditor.Document.Text = "";
+            return;
+        }
+
+
         if (_textEditor != null && _textEditor.Document != null && text != null)
         {
-            var caretOffset = _textEditor.CaretOffset;
-            _textEditor.Document.Text = text;
-            _textEditor.CaretOffset = caretOffset;
+            try
+            {
+                var caretOffset = _textEditor.CaretOffset;
+                _textEditor.Document.Text = text;
+                _textEditor.CaretOffset = caretOffset;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Exception at TextPropertyChanged on DocumentTextBindingBehavior\n {ex.Message}");
+            }
         }
     }
 }

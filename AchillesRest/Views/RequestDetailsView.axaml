@@ -61,7 +61,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Headers" >
+            <TabItem Header="Headers">
                 <Grid RowDefinitions="50, *">
                     <Panel Grid.Row="0">
                         <!-- <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="0, 5, 0, 0" TextDecorations="Underline">Headers</TextBlock> -->
@@ -101,19 +101,17 @@
 
                 <ae:TextEditor x:Name="textCode"
                                Margin="0"
-                               Background="WhiteSmoke"
-                               Foreground="Black"
-                               SyntaxHighlighting="Json"
+                               SyntaxHighlighting="jsonachilles"
                                HorizontalScrollBarVisibility="Auto"
                                VerticalScrollBarVisibility="Auto"
-                               FontFamily="{DynamicResource CodeFontFamily}" 
-                               FontWeight="Normal" 
+                               ShowLineNumbers="True"
+                               FontFamily="{DynamicResource CodeFontFamily}"
+                               FontWeight="Normal"
                                FontSize="14"
-                               WordWrap="False"
-                               >
+                               WordWrap="False">
                     <i:Interaction.Behaviors>
                         <behaviors:DocumentTextBindingBehavior
-                            Text="{Binding RequestService.SelectedRequest.Body, Mode=TwoWay, FallbackValue='\{jonhson\}'}" />
+                            Text="{Binding RequestService.SelectedRequest.Body, Mode=TwoWay, FallbackValue=''}" />
                     </i:Interaction.Behaviors>
                 </ae:TextEditor>
             </TabItem>

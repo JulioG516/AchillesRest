@@ -27,7 +27,7 @@
                 <TextBlock
 
                     Text="{Binding RequestService.Response.HttpMessage.StatusCode, FallbackValue='' }"
-                    Classes.Success="{Binding RequestService.Response.HttpMessage.IsSuccessStatusCode, FallbackValue=''}">
+                    Classes.Success="{Binding RequestService.Response.HttpMessage.IsSuccessStatusCode, FallbackValue='false'}">
                     <TextBlock.Styles>
 
                         <Style Selector="TextBlock.Success">
@@ -75,23 +75,30 @@
                 </PathIcon.Styles>
             </PathIcon>
 
-
-            <ae:TextEditor x:Name="textResponse"
-                           Margin="0"
-                           SyntaxHighlighting="jsonachilles"
-                           HorizontalScrollBarVisibility="Auto"
-                           VerticalScrollBarVisibility="Auto"
-                           FontFamily="{DynamicResource CodeFontFamily}"
-                           FontWeight="Normal"
-                           FontSize="16"
-                           IsVisible="{Binding !RequestService.IsLoading}"
-                           WordWrap="False"
-                           >
-                <i:Interaction.Behaviors>
-                    <behaviors:DocumentTextBindingBehavior
-                        Text="{Binding RequestService.Response.Content, FallbackValue=''}" />
-                </i:Interaction.Behaviors>
-            </ae:TextEditor>
+            <Grid IsVisible="{Binding !RequestService.IsLoading}">
+                <ae:TextEditor x:Name="textResponse"
+                               Margin="0"
+                               SyntaxHighlighting="jsonachilles"
+                               HorizontalScrollBarVisibility="Auto"
+                               VerticalScrollBarVisibility="Auto"
+                               FontFamily="{DynamicResource CodeFontFamily}"
+                               FontWeight="Normal"
+                               FontSize="16"
+                               WordWrap="False">
+                    <i:Interaction.Behaviors>
+                        <behaviors:DocumentTextBindingBehavior
+                            Text="{Binding RequestService.Response.Content, FallbackValue=''}" />
+                    </i:Interaction.Behaviors>
+                </ae:TextEditor>
+                
+                <Button
+                    IsVisible="{Binding RequestService.Response.Content, Converter={x:Static ObjectConverters.IsNotNull}}"
+                    Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top"
+                    Command="{Binding ClipboardCopyCommand}"
+                    >
+                    Copy
+                </Button>
+            </Grid>
 
 
             <!-- <ScrollViewer> -->

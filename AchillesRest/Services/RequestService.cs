@@ -293,7 +293,7 @@ public class RequestService : ReactiveObject
                     {
                         Action = EnumActions.POST, Name = "Post DummyJson",
                         Endpoint = "https://dummyjson.com/auth/login",
-                        Body = "{\n\"username\": \"michaelw\",\n\"password\": \"michaelwpass\"\n}",
+                        Body = "{\n\t\"username\": \"michaelw\",\n\t\"password\": \"michaelwpass\"\n}",
                         Headers = new List<Header>
                             { new() { Key = "Content-Type", Value = "application/json", Enabled = true } }
                     },

@@ -1,6 +1,7 @@
 ﻿using AchillesRest.ViewModels;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.ReactiveUI;
 using AvaloniaEdit;
 using AvaloniaEdit.Indentation.CSharp;
@@ -17,7 +18,8 @@ public partial class RequestDetailsView : ReactiveUserControl<RequestDetailsView
         this.WhenActivated(disposables => { });
         AvaloniaXamlLoader.Load(this);
         _textEditor = this.FindControl<TextEditor>("textCode");
+        _textEditor.TextArea.TextView.LinkTextForegroundBrush = Brushes.Cyan;
         // _textEditor.ShowLineNumbers = true;
-        _textEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy();
+        // _textEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy();
     }
 }
