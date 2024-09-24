@@ -16,6 +16,7 @@ public partial class App : Application
 
         Locator.CurrentMutable.RegisterConstant(new RequestService(), typeof(RequestService));
         Locator.CurrentMutable.Register(() => new MenuCollectionsViewModel(), typeof(MenuCollectionsViewModel));
+
     }
 
     public override void OnFrameworkInitializationCompleted()

@@ -220,6 +220,18 @@ public class RequestService : ReactiveObject
         if (request.Authentication != null)
             request.Authentication.ApplyAuthentication(requestMessage);
 
+        if ((request.Action == EnumActions.POST
+             || request.Action == EnumActions.PUT
+             || request.Action == EnumActions.PATCH)
+            && !string.IsNullOrEmpty(request.Body))
+        {
+            // Add body
+            var content = new StringContent(request.Body, System.Text.Encoding.UTF8,
+                "application/json");
+
+            requestMessage.Content = content;
+        }
+
         try
         {
             var responseMessage = await httpClient.SendAsync(requestMessage);
@@ -279,8 +291,11 @@ public class RequestService : ReactiveObject
                     },
                     new()
                     {
-                        Action = EnumActions.POST, Name = "Post Json With something",
-                        Endpoint = "http://localhost:5200/test/post"
+                        Action = EnumActions.POST, Name = "Post DummyJson",
+                        Endpoint = "https://dummyjson.com/auth/login",
+                        Body = "{\n\"username\": \"michaelw\",\n\"password\": \"michaelwpass\"\n}",
+                        Headers = new List<Header>
+                            { new() { Key = "Content-Type", Value = "application/json", Enabled = true } }
                     },
                 }
             }),

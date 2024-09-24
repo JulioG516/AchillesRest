@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using AchillesRest.Models;
 using AchillesRest.Models.Authentications;
@@ -82,6 +81,13 @@ public class RequestViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _selectedAuthType, value);
     }
 
+    private string? _body;
+
+    public string? Body
+    {
+        get => _body;
+        set => this.RaiseAndSetIfChanged(ref _body, value);
+    }
 
     public ObservableCollection<Header> Headers { get; set; } = new ObservableCollection<Header>();
 
@@ -96,8 +102,9 @@ public class RequestViewModel : ViewModelBase
         Endpoint = request.Endpoint;
         SelectedAuthType = request.SelectedAuthType;
         Authentication = request.Authentication;
-
+        Body = request.Body;
         Headers = new ObservableCollection<Header>(request.Headers);
+
 
         this.WhenAnyValue(x => x.Action, x
                 => x.Endpoint)

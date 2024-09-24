@@ -14,6 +14,7 @@ public class Request
 
     public List<Header> Headers { get; set; } = new List<Header>();
 
+    public string? Body { get; set; }
 
     // TODO:  Auth, Headers, Params
 }

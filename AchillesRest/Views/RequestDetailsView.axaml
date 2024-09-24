@@ -7,7 +7,10 @@
              xmlns:vm="using:AchillesRest.ViewModels"
              x:DataType="vm:RequestDetailsViewModel"
              xmlns:converters="clr-namespace:AchillesRest.Converters"
-             xmlns:models="clr-namespace:AchillesRest.Models">
+             xmlns:models="clr-namespace:AchillesRest.Models"
+             xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
+             xmlns:behaviors="clr-namespace:AchillesRest.Behaviors"
+             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity">
 
     <Design.DataContext>
         <vm:RequestDetailsViewModel />
@@ -58,7 +61,7 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Headers" IsSelected="True">
+            <TabItem Header="Headers" >
                 <Grid RowDefinitions="50, *">
                     <Panel Grid.Row="0">
                         <!-- <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="0, 5, 0, 0" TextDecorations="Underline">Headers</TextBlock> -->
@@ -92,8 +95,27 @@
 
             </TabItem>
 
-            <TabItem Header="Body">
-                <TextBlock Text="Body... #TODO" />
+            <TabItem Header="Body" IsSelected="True">
+                <!-- <TextBox Text="{Binding  RequestService.SelectedRequest.Body, FallbackValue=''}" -->
+                <!--          TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" /> -->
+
+                <ae:TextEditor x:Name="textCode"
+                               Margin="0"
+                               Background="WhiteSmoke"
+                               Foreground="Black"
+                               SyntaxHighlighting="Json"
+                               HorizontalScrollBarVisibility="Auto"
+                               VerticalScrollBarVisibility="Auto"
+                               FontFamily="{DynamicResource CodeFontFamily}" 
+                               FontWeight="Normal" 
+                               FontSize="14"
+                               WordWrap="False"
+                               >
+                    <i:Interaction.Behaviors>
+                        <behaviors:DocumentTextBindingBehavior
+                            Text="{Binding RequestService.SelectedRequest.Body, Mode=TwoWay, FallbackValue='\{jonhson\}'}" />
+                    </i:Interaction.Behaviors>
+                </ae:TextEditor>
             </TabItem>
 
             <TabItem Header="Generated Code">

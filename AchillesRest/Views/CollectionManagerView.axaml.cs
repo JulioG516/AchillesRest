@@ -1,13 +1,15 @@
-﻿using Avalonia;
-using Avalonia.Controls;
+﻿using AchillesRest.ViewModels;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using ReactiveUI;
 
 namespace AchillesRest.Views;
 
-public partial class CollectionManagerView : UserControl
+public partial class CollectionManagerView : ReactiveUserControl<CollectionManagerViewModel>
 {
     public CollectionManagerView()
     {
-        InitializeComponent();
+        this.WhenActivated(disposables => { });
+        AvaloniaXamlLoader.Load(this);
     }
 }
