@@ -78,9 +78,7 @@
 
             <ae:TextEditor x:Name="textResponse"
                            Margin="0"
-                           Background="WhiteSmoke"
-                           Foreground="Black"
-                           SyntaxHighlighting="Json"
+                           SyntaxHighlighting="jsonachilles"
                            HorizontalScrollBarVisibility="Auto"
                            VerticalScrollBarVisibility="Auto"
                            FontFamily="{DynamicResource CodeFontFamily}"
