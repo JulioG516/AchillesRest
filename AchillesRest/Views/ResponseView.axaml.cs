@@ -17,7 +17,7 @@ public partial class ResponseView : ReactiveUserControl<ResponseViewModel>
     {
         this.WhenActivated(disposables => { });
         AvaloniaXamlLoader.Load(this);
-        _textEditor = this.FindControl<TextEditor>("textResponse");
+        _textEditor = this.FindControl<TextEditor>("textResponse")!;
         _textEditor.TextArea.TextView.LinkTextForegroundBrush = Brushes.Cyan;
         // _textEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy();
     }

@@ -1,8 +1,6 @@
-using System.Linq;
 using AchillesRest.Helpers;
 using AchillesRest.ViewModels;
 using Avalonia;
-using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;

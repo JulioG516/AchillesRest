@@ -8,7 +8,7 @@ namespace AchillesRest.Behaviors;
 
 public class DocumentTextBindingBehavior : Behavior<TextEditor>
 {
-    private TextEditor _textEditor = null;
+    private TextEditor? _textEditor = null;
 
     public static readonly StyledProperty<string> TextProperty =
         AvaloniaProperty.Register<DocumentTextBindingBehavior, string>(nameof(Text));
@@ -26,7 +26,7 @@ public class DocumentTextBindingBehavior : Behavior<TextEditor>
         if (AssociatedObject is TextEditor textEditor)
         {
             _textEditor = textEditor;
-            _textEditor.TextChanged += TextChanged;
+            _textEditor.TextChanged += TextChanged!;
             this.GetObservable(TextProperty).Subscribe(TextPropertyChanged);
         }
     }
@@ -37,7 +37,7 @@ public class DocumentTextBindingBehavior : Behavior<TextEditor>
 
         if (_textEditor != null)
         {
-            _textEditor.TextChanged -= TextChanged;
+            _textEditor.TextChanged -= TextChanged!;
         }
     }
 
@@ -53,7 +53,7 @@ public class DocumentTextBindingBehavior : Behavior<TextEditor>
     {
         if (text == null)
         {
-            _textEditor.CaretOffset = 0;
+            _textEditor!.CaretOffset = 0;
             _textEditor.Document.Text = "";
             return;
         }

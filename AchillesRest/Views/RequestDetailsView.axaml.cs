@@ -17,7 +17,7 @@ public partial class RequestDetailsView : ReactiveUserControl<RequestDetailsView
     {
         this.WhenActivated(disposables => { });
         AvaloniaXamlLoader.Load(this);
-        _textEditor = this.FindControl<TextEditor>("textCode");
+        _textEditor = this.FindControl<TextEditor>("textCode")!;
         _textEditor.TextArea.TextView.LinkTextForegroundBrush = Brushes.Cyan;
         // _textEditor.ShowLineNumbers = true;
         // _textEditor.TextArea.IndentationStrategy = new CSharpIndentationStrategy();
