@@ -327,6 +327,6 @@ public class RequestService : ReactiveObject
         if (SelectedRequest == null)
             return;
 
-        SelectedRequest.Headers.Add(new Header() { Enabled = true });
+        SelectedRequest.Headers.Add(new HeaderViewModel() { Enabled = true });
     }
 }

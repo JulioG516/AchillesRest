@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using AchillesRest.Models;
 using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
@@ -89,7 +90,7 @@ public class RequestViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _body, value);
     }
 
-    public ObservableCollection<Header> Headers { get; set; } = new ObservableCollection<Header>();
+    public ObservableCollection<HeaderViewModel> Headers { get; set; } = new();
 
     public RequestViewModel()
     {
@@ -103,7 +104,7 @@ public class RequestViewModel : ViewModelBase
         SelectedAuthType = request.SelectedAuthType;
         Authentication = request.Authentication;
         Body = request.Body;
-        Headers = new ObservableCollection<Header>(request.Headers);
+        Headers = new ObservableCollection<HeaderViewModel>(request.Headers?.Select(h => new HeaderViewModel(h)) ?? Array.Empty<HeaderViewModel>());
 
 
         this.WhenAnyValue(x => x.Action, x

@@ -7,7 +7,6 @@
              xmlns:vm="using:AchillesRest.ViewModels"
              x:DataType="vm:RequestDetailsViewModel"
              xmlns:converters="clr-namespace:AchillesRest.Converters"
-             xmlns:models="clr-namespace:AchillesRest.Models"
              xmlns:ae="clr-namespace:AvaloniaEdit;assembly=AvaloniaEdit"
              xmlns:behaviors="clr-namespace:AchillesRest.Behaviors"
              xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity">
@@ -75,10 +74,11 @@
                             ItemsSource="{Binding RequestService.SelectedRequest.Headers,
                                      FallbackValue=''}">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="models:Header">
+                                <DataTemplate DataType="vm:HeaderViewModel">
                                     <Grid ColumnDefinitions="4*, 4*, 2*" Margin="0, 5, 0, 5">
-                                        <TextBox Grid.Column="0" Watermark="Key" Text="{Binding Key}" />
-                                        <TextBox Grid.Column="1" Watermark="Value"
+                                        <TextBox Grid.Column="0" Watermark="Key" Text="{Binding Key}"
+                                                 IsEnabled="{Binding Enabled}" />
+                                        <TextBox Grid.Column="1" Watermark="Value" IsEnabled="{Binding Enabled}"
                                                  Text="{Binding Value}"
                                                  Margin="5, 0, 0,0" />
                                         <CheckBox Grid.Column="2"

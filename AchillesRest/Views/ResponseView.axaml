@@ -23,7 +23,7 @@
         <Panel Grid.Row="0"
                IsVisible="{Binding RequestService.Response.HttpMessage, 
                 Converter={x:Static ObjectConverters.IsNotNull}}">
-            <Border CornerRadius="3.5" Background="Silver" BorderBrush="DimGray">
+            <Border CornerRadius="3.5" Background="#252422" BorderBrush="#e9e8e7  ">
                 <TextBlock
 
                     Text="{Binding RequestService.Response.HttpMessage.StatusCode, FallbackValue='' }"
