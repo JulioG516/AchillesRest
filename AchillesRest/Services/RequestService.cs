@@ -126,6 +126,21 @@ public class RequestService : ReactiveObject
             SelectedCollection = null;
     }
 
+    public void AddRequest(CollectionViewModel collectionViewModel)
+    {
+        var collection = Collections.FirstOrDefault(c => c.Equals(collectionViewModel));
+
+        if (collection != null)
+        {
+            collection.Requests!.Add(new RequestViewModel(new Request
+            {
+                Action = EnumActions.GET,
+                Name = "Unnamed"
+            }));
+        }
+        
+    }
+
     public void DeleteRequest(RequestViewModel request)
     {
         var collection = Collections.FirstOrDefault(w => w.Requests != null && w.Requests.Contains(request));
@@ -184,6 +199,38 @@ public class RequestService : ReactiveObject
     {
         get => _isLoading;
         set => this.RaiseAndSetIfChanged(ref _isLoading, value);
+    }
+
+    public void AddHeader()
+    {
+        if (SelectedRequest == null)
+            return;
+
+        SelectedRequest.Headers.Add(new KeyValueParamViewModel(new KeyValueParam { Enabled = true }));
+    }
+
+    public void DeleteHeader(KeyValueParamViewModel header)
+    {
+        if (SelectedRequest == null)
+            return;
+
+        SelectedRequest.Headers.Remove(header);
+    }
+
+    public void AddQueryParam()
+    {
+        if (SelectedRequest == null)
+            return;
+
+        SelectedRequest.QueryParams.Add(new KeyValueParamViewModel(new KeyValueParam { Enabled = true }));
+    }
+
+    public void DeleteQueryParam(KeyValueParamViewModel queryParam)
+    {
+        if (SelectedRequest == null)
+            return;
+
+        SelectedRequest.QueryParams.Remove(queryParam);
     }
 
     public async Task SendRequest()
@@ -294,7 +341,7 @@ public class RequestService : ReactiveObject
                         Action = EnumActions.POST, Name = "Post DummyJson",
                         Endpoint = "https://dummyjson.com/auth/login",
                         Body = "{\n\t\"username\": \"michaelw\",\n\t\"password\": \"michaelwpass\"\n}",
-                        Headers = new List<Header>
+                        Headers = new List<KeyValueParam>
                             { new() { Key = "Content-Type", Value = "application/json", Enabled = true } }
                     },
                 }
@@ -320,13 +367,5 @@ public class RequestService : ReactiveObject
     public override string ToString()
     {
         return $"Collection: {SelectedCollection}\nRequest: {SelectedRequest}";
-    }
-
-    public void AddHeader()
-    {
-        if (SelectedRequest == null)
-            return;
-
-        SelectedRequest.Headers.Add(new HeaderViewModel() { Enabled = true });
     }
 }

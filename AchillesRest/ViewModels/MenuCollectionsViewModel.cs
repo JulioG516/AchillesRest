@@ -101,11 +101,13 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
 
     private void ContextMenuAddRequest(CollectionViewModel collectionViewModel)
     {
-        collectionViewModel.Requests!.Add(new RequestViewModel(new Request
-        {
-            Action = EnumActions.GET,
-            Name = "Unnamed"
-        }));
+        // collectionViewModel.Requests!.Add(new RequestViewModel(new Request
+        // {
+        //     Action = EnumActions.GET,
+        //     Name = "Unnamed"
+        // }));
+
+        RequestService.AddRequest(collectionViewModel);
     }
 
     public ICommand CtxDeleteRequestCommand { get; }
@@ -146,5 +148,4 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
 
 
     public RequestService RequestService { get; }
-
 }

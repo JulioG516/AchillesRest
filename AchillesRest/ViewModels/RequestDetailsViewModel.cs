@@ -21,6 +21,11 @@ public class RequestDetailsViewModel : ViewModelBase
         _requests = new Dictionary<RequestViewModel, int?>();
 
         AddHeaderCommand = ReactiveCommand.Create(AddHeader);
+        DeleteHeaderCommand = ReactiveCommand.Create<KeyValueParamViewModel>(DeleteHeader);
+
+        AddQueryParamCommand = ReactiveCommand.Create(AddQueryParam);
+        DeleteQueryParamCommand = ReactiveCommand.Create<KeyValueParamViewModel>(DeleteQueryParam);
+
 
         Authentications =
             new ObservableCollection<EnumAuthTypes>(Enum.GetValues(typeof(EnumAuthTypes)).Cast<EnumAuthTypes>());
@@ -38,6 +43,27 @@ public class RequestDetailsViewModel : ViewModelBase
     private void AddHeader()
     {
         RequestService.AddHeader();
+    }
+
+    public ICommand DeleteHeaderCommand { get; }
+
+    private void DeleteHeader(KeyValueParamViewModel header)
+    {
+        RequestService.DeleteHeader(header);
+    }
+
+    public ICommand AddQueryParamCommand { get; }
+
+    private void AddQueryParam()
+    {
+        RequestService.AddQueryParam();
+    }
+
+    public ICommand DeleteQueryParamCommand { get; }
+
+    private void DeleteQueryParam(KeyValueParamViewModel queryParam)
+    {
+        RequestService.DeleteQueryParam(queryParam);
     }
 
     public ObservableCollection<EnumAuthTypes> Authentications { get; }

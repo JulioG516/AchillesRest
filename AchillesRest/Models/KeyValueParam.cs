@@ -1,6 +1,6 @@
 ﻿namespace AchillesRest.Models;
 
-public class Header
+public class KeyValueParam
 {
     public string? Key { get; set; }
     public string? Value { get; set; }

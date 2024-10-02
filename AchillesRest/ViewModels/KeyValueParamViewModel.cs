@@ -3,10 +3,9 @@ using ReactiveUI;
 
 namespace AchillesRest.ViewModels;
 
-public class HeaderViewModel : ViewModelBase
+public class KeyValueParamViewModel : ViewModelBase
 {
     private string? _key;
-
     public string? Key
     {
         get => _key;
@@ -14,7 +13,6 @@ public class HeaderViewModel : ViewModelBase
     }
 
     private string? _value;
-
     public string? Value
     {
         get => _value;
@@ -22,21 +20,16 @@ public class HeaderViewModel : ViewModelBase
     }
 
     private bool _enabled;
-
     public bool Enabled
     {
         get => _enabled;
         set => this.RaiseAndSetIfChanged(ref _enabled, value);
     }
-
-    public HeaderViewModel()
+    
+    public KeyValueParamViewModel(KeyValueParam keyValueParam)
     {
-    }
-
-    public HeaderViewModel(Header header)
-    {
-        Key = header.Key;
-        Value = header.Value;
-        Enabled = header.Enabled;
+        Key = keyValueParam.Key;
+        Value = keyValueParam.Value;
+        Enabled = keyValueParam.Enabled;
     }
 }
