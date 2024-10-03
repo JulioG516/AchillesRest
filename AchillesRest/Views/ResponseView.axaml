@@ -38,11 +38,17 @@
         </Styles>
     </UserControl.Styles>
 
-    
+
     <Grid RowDefinitions="25, *">
-        <Panel Grid.Row="0"
-               IsVisible="{Binding RequestService.Response.HttpMessage, 
-                Converter={x:Static ObjectConverters.IsNotNull}}">
+        <Panel Grid.Row="0">
+            <Panel.IsVisible>
+                <MultiBinding Converter="{StaticResource AllTrueMultiConverter}">
+                    <Binding Path="RequestService.Response.HttpMessage"
+                             Converter="{x:Static ObjectConverters.IsNotNull}" />
+                    <Binding Path="!RequestService.IsLoading" />
+                </MultiBinding>
+            </Panel.IsVisible>
+
             <Border CornerRadius="3.5" Background="#252422" BorderBrush="#e9e8e7  ">
                 <TextBlock
                     Text="{Binding RequestService.Response.HttpMessage.StatusCode, FallbackValue='', TargetNullValue='' }"
@@ -64,6 +70,28 @@
 
         </Panel>
         <Panel Grid.Row="1">
+
+
+            <StackPanel VerticalAlignment="Center">
+                <StackPanel.IsVisible>
+                    <MultiBinding Converter="{StaticResource AllTrueMultiConverter}">
+                        <Binding Path="RequestService.Response"
+                                 Converter="{x:Static ObjectConverters.IsNull}" />
+                        <Binding Path="!RequestService.IsLoading" />
+                    </MultiBinding>
+                </StackPanel.IsVisible>
+
+                <PathIcon Data="{StaticResource GlobeClockRegular}"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Width="60"
+                          Height="60" />
+                <TextBlock Margin="0, 30, 0, 0" VerticalAlignment="Center" HorizontalAlignment="Center"
+                           Text="Send to see a response.">
+                </TextBlock>
+            </StackPanel>
+
+
             <PathIcon Data="{StaticResource LoadingRegular}" IsVisible="{Binding RequestService.IsLoading}">
                 <PathIcon.Styles>
                     <Style Selector="PathIcon">
@@ -97,11 +125,12 @@
             <Panel>
                 <Panel.IsVisible>
                     <MultiBinding Converter="{StaticResource AllTrueMultiConverter}">
-                        <Binding Path="RequestService.Response.HttpMessage"
+                        <Binding Path="RequestService.Response"
                                  Converter="{x:Static ObjectConverters.IsNotNull}" />
                         <Binding Path="!RequestService.IsLoading" />
                     </MultiBinding>
                 </Panel.IsVisible>
+
                 <TabControl SelectedIndex="{Binding SelectedTab}">
                     <TabItem Header="Body">
                         <Grid>
@@ -132,21 +161,21 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Headers">
-
+                        <ItemsControl ItemsSource="{Binding RequestService.Response.Headers, FallbackValue=''}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="vm:KeyValueParamViewModel">
+                                    <Grid ColumnDefinitions="4*, 4*" Margin="0, 5, 0, 5">
+                                        <TextBox IsReadOnly="True" Grid.Column="0" Text="{Binding Key}"
+                                                 Margin="5, 0,0,0" />
+                                        <TextBox IsReadOnly="True" Grid.Column="1" Text="{Binding Value}"
+                                                 Margin="5, 0, 0,0 " />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
                     </TabItem>
                 </TabControl>
             </Panel>
-
-
-            <!-- <ScrollViewer> -->
-            <!--     <SelectableTextBlock -->
-            <!--         TextWrapping="Wrap" -->
-            <!--         FontSize="16" IsVisible="{Binding !RequestService.IsLoading}" -->
-            <!--         Text="{Binding RequestService.Response.Content, FallbackValue=''}"> -->
-            <!-- -->
-            <!-- -->
-            <!--     </SelectableTextBlock> -->
-            <!-- </ScrollViewer> -->
 
         </Panel>
     </Grid>

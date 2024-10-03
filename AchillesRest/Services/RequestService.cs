@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -138,7 +139,6 @@ public class RequestService : ReactiveObject
                 Name = "Unnamed"
             }));
         }
-        
     }
 
     public void DeleteRequest(RequestViewModel request)
@@ -172,7 +172,7 @@ public class RequestService : ReactiveObject
             }
             else
             {
-                Response = new AchillesHttpResponse();
+                Response = null; // new AchillesHttpResponse();
             }
         }
     }
@@ -182,7 +182,10 @@ public class RequestService : ReactiveObject
     public CollectionViewModel? SelectedCollection
     {
         get => _selectedCollection;
-        set => this.RaiseAndSetIfChanged(ref _selectedCollection, value);
+        set
+        {
+            this.RaiseAndSetIfChanged(ref _selectedCollection, value);
+        }
     }
 
     private AchillesHttpResponse? _response;
@@ -288,6 +291,20 @@ public class RequestService : ReactiveObject
             string formattedJson = JsonFormatter.Format(response);
             Response!.Content = formattedJson;
 
+            List<KeyValueParamViewModel> responseHeaders = new();
+
+            foreach (var header in responseMessage.Headers)
+            {
+                string headerName = header.Key;
+                string headerContent = string.Join(",", header.Value.ToArray());
+
+                responseHeaders.Add(new KeyValueParamViewModel(new KeyValueParam
+                    { Key = headerName, Value = headerContent }));
+            }
+
+            Response!.Headers = new ObservableCollection<KeyValueParamViewModel>(responseHeaders);
+
+            Debug.WriteLine(responseHeaders.Count);
 
             // var responseContent = await responseMessage.Content.ReadAsStringAsync();
             // ResponseContent = responseContent;

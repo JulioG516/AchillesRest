@@ -40,6 +40,7 @@
             <ScrollViewer Grid.Row="1">
                 <TreeView ItemsSource="{Binding RequestService.Collections}"
                           SelectedItem="{Binding  SelectedNode, Mode=TwoWay}"
+                          IsEnabled="{Binding !RequestService.IsLoading}"
                           >
                     <TreeView.DataTemplates>
                         <TreeDataTemplate DataType="vm:CollectionViewModel" ItemsSource="{Binding   Requests}">
