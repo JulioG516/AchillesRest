@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using AchillesRest.Helpers;
+using AchillesRest.Models;
 using AchillesRest.Models.Enums;
 using AchillesRest.Services;
 using ReactiveUI;
@@ -26,14 +29,36 @@ public class RequestDetailsViewModel : ViewModelBase
         AddQueryParamCommand = ReactiveCommand.Create(AddQueryParam);
         DeleteQueryParamCommand = ReactiveCommand.Create<KeyValueParamViewModel>(DeleteQueryParam);
 
+        CopyGeneratedCodeCommand = ReactiveCommand.CreateFromTask(CopyGeneratedCode);
 
         Authentications =
             new ObservableCollection<EnumAuthTypes>(Enum.GetValues(typeof(EnumAuthTypes)).Cast<EnumAuthTypes>());
 
+        // this.WhenAnyValue(x => x.RequestService.SelectedRequest)
+        //     .WhereNotNull()
+        //     .DistinctUntilChanged()
+        //     .Subscribe(_ => { SelectedTab = _requests!.GetValueOrDefault(RequestService.SelectedRequest, 0); });
+
+
         this.WhenAnyValue(x => x.RequestService.SelectedRequest)
             .WhereNotNull()
             .DistinctUntilChanged()
-            .Subscribe(_ => { SelectedTab = _requests!.GetValueOrDefault(RequestService.SelectedRequest, 0); });
+            .Subscribe(request =>
+            {
+                SelectedTab = _requests!.GetValueOrDefault(request, 0);
+
+                // Subscribe to Action and Endpoint changes
+                request.WhenAnyValue(r => r.Action, r => r.Endpoint)
+                    .CombineLatest(this.WhenAnyValue(x => x.SelectedTab))
+                    .Where(tuple => tuple.Second == 4) // Only when SelectedTab is 4
+                    .Subscribe(_ => request.UpdateGeneratedCode());
+            });
+
+
+        // this.WhenAnyValue(x => x.SelectedTab)
+        //     .DistinctUntilChanged()
+        //     .Where(index => index == 4)
+        //     .Subscribe(_ => RequestService.SelectedRequest?.UpdateGeneratedCode());
     }
 
     public RequestService RequestService { get; }
@@ -64,6 +89,16 @@ public class RequestDetailsViewModel : ViewModelBase
     private void DeleteQueryParam(KeyValueParamViewModel queryParam)
     {
         RequestService.DeleteQueryParam(queryParam);
+    }
+
+    public ICommand CopyGeneratedCodeCommand { get; }
+
+    private async Task CopyGeneratedCode()
+    {
+        if (RequestService.SelectedRequest != null && RequestService.SelectedRequest.GeneratedCode != null)
+        {
+            await Interactions.SetClipboard.Handle(RequestService.SelectedRequest.GeneratedCode);
+        }
     }
 
     public ObservableCollection<EnumAuthTypes> Authentications { get; }

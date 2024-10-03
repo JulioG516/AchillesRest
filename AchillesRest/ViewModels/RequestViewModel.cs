@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
+using AchillesRest.Helpers;
 using AchillesRest.Models;
 using AchillesRest.Models.Authentications;
+using AchillesRest.Models.CodeGenerations;
 using AchillesRest.Models.Enums;
 using DynamicData;
 using DynamicData.Binding;
@@ -56,25 +59,41 @@ public class RequestViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _generatedCode, value);
     }
 
-    private void UpdateGeneratedCode()
+    public void UpdateGeneratedCode()
     {
-        string method = Action switch
-        {
-            EnumActions.GET => "HttpMethod.Get",
-            EnumActions.POST => "HttpMethod.Post",
-            EnumActions.DELETE => "HttpMethod.Delete",
-            EnumActions.HEAD => "HttpMethod.Head",
-            EnumActions.PUT => "HttpMethod.Put",
-            EnumActions.PATCH => "HttpMethod.Patch",
-            EnumActions.OPTIONS => "HttpMethod.Options",
-            _ => throw new InvalidOperationException("Invalid Request Action.")
-        };
+        var generator = CodeGeneratorFactory.GetCodeGenerator(SupportedLanguagesGeneration.CSharp);
+        Debug.WriteLine("Gerei o codiog");
+        GeneratedCode = generator.GenerateCode(Action!.Value, Endpoint!, Headers.ToList(), Authentication);
 
-        GeneratedCode = $@"
-                var client = new HttpClient();
-                var requestMessage = new HttpRequestMessage({method}, ""{Endpoint}"");
-                
-                var response = await client.SendAsync(requestMessage);";
+
+//         string method = Action switch
+//         {
+//             EnumActions.GET => "HttpMethod.Get",
+//             EnumActions.POST => "HttpMethod.Post",
+//             EnumActions.DELETE => "HttpMethod.Delete",
+//             EnumActions.HEAD => "HttpMethod.Head",
+//             EnumActions.PUT => "HttpMethod.Put",
+//             EnumActions.PATCH => "HttpMethod.Patch",
+//             EnumActions.OPTIONS => "HttpMethod.Options",
+//             _ => throw new InvalidOperationException("Invalid Request Action.")
+//         };
+//
+//         string headers = string.Empty;
+//
+//         if (Headers.Count > 0)
+//         {
+//             headers = string.Join(Environment.NewLine,
+//                 Headers.Where(x => x.Enabled).Select(header =>
+//                     $@"requestMessage.Headers.Add(""{header.Key}"", ""{header.Value}"");"));
+//         }
+//
+//         GeneratedCode = $@"
+// var client = new HttpClient();
+// var requestMessage = new HttpRequestMessage({method}, ""{Endpoint}"");
+//
+// {headers}
+//
+// var response = await client.SendAsync(requestMessage);";
     }
 
 
@@ -125,9 +144,18 @@ public class RequestViewModel : ViewModelBase
             request.QueryParams.Select(q => new KeyValueParamViewModel(q)));
 
 
-        this.WhenAnyValue(x => x.Action, x
-                => x.Endpoint)
-            .Subscribe(_ => UpdateGeneratedCode());
+        // To use in Generated Code
+        //
+        // this.WhenAnyValue(x => x.Action, x
+        //         => x.Endpoint)
+        //     .Subscribe(_ => UpdateGeneratedCode());
+        //
+        // Headers
+        //     .ToObservableChangeSet()
+        //     .AutoRefreshOnObservable(kvp => kvp.WhenAnyValue(x => x.Key, x => x.Value, x => x.Enabled))
+        //     .Subscribe(_ => UpdateGeneratedCode());
+
+        // ------------------------------
 
         QueryParams
             .ToObservableChangeSet()

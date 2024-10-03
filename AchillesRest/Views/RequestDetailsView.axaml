@@ -63,10 +63,9 @@
                                                   ToolTip.Tip="Enables or disables that header key-value pair." />
                                         <Button Grid.Column="3"
                                                 Command="{Binding $parent[ItemsControl].((vm:RequestDetailsViewModel)DataContext).DeleteQueryParamCommand}"
-                                                CommandParameter="{Binding .}"
-                                                >
-                                        <PathIcon Data="{StaticResource DeleteRegular}"
-                                                  Width="15" Height="15" />
+                                                CommandParameter="{Binding .}">
+                                            <PathIcon Data="{StaticResource DeleteRegular}"
+                                                      Width="15" Height="15" />
                                         </Button>
                                     </Grid>
                                 </DataTemplate>
@@ -119,12 +118,11 @@
                                                   ToolTip.Tip="Enables or disables that header key-value pair." />
                                         <Button Grid.Column="3"
                                                 Command="{Binding $parent[ItemsControl].((vm:RequestDetailsViewModel)DataContext).DeleteHeaderCommand}"
-                                                CommandParameter="{Binding .}"
-                                        >
+                                                CommandParameter="{Binding .}">
                                             <PathIcon Data="{StaticResource DeleteRegular}"
                                                       Width="15" Height="15" />
                                         </Button>
-                                        
+
                                     </Grid>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
@@ -136,7 +134,7 @@
 
             </TabItem>
 
-            <TabItem Header="Body" >
+            <TabItem Header="Body">
                 <!-- <TextBox Text="{Binding  RequestService.SelectedRequest.Body, FallbackValue=''}" -->
                 <!--          TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" /> -->
 
@@ -158,12 +156,23 @@
             </TabItem>
 
             <TabItem Header="Generated Code">
-                <SelectableTextBlock
-                    Text="{Binding RequestService.SelectedRequest.GeneratedCode,
+                <Grid>
+                    <SelectableTextBlock
+                        Text="{Binding RequestService.SelectedRequest.GeneratedCode,
                  FallbackValue=''}">
+                    </SelectableTextBlock>
+
+                    <Button HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{Binding CopyGeneratedCodeCommand}"
+                            ToolTip.Tip="Copy the generated code.">
+                        <PathIcon Width="15" Height="15"
+                                  Data="{StaticResource CopyRegular}" />
+
+                    </Button>
+                </Grid>
 
 
-                </SelectableTextBlock>
             </TabItem>
         </TabControl>
 

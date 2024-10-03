@@ -5,6 +5,7 @@ namespace AchillesRest.Models.Authentications;
 public interface IAuthentication
 {
     void ApplyAuthentication(HttpRequestMessage requestMessage);
+    string GetAuthenticationString();
 }
 
 public class BasicAuthentication : IAuthentication
@@ -20,6 +21,17 @@ public class BasicAuthentication : IAuthentication
         var plainTextBytes = System.Text.Encoding.UTF8.GetBytes($"{Username}:{Password}");
         var base64 = System.Convert.ToBase64String(plainTextBytes);
         requestMessage.Headers.Add("Authorization", $"Basic {base64}");
+    }
+
+    public string GetAuthenticationString()
+    {
+        if (Username == null || Password == null)
+            return string.Empty;
+
+
+        var plainTextBytes = System.Text.Encoding.UTF8.GetBytes($"{Username}:{Password}");
+        var base64 = System.Convert.ToBase64String(plainTextBytes);
+        return base64;
     }
 
     public override string ToString()
@@ -40,6 +52,14 @@ public class BearerAuthentication : IAuthentication
         requestMessage.Headers.Add("Authorization", $"Bearer {Token}");
     }
 
+    public string GetAuthenticationString()
+    {
+        if (Token == null)
+            return string.Empty;
+
+        return $"Bearer {Token}";
+    }
+
     public override string ToString()
     {
         return $"Bearer Authentication - Token: {Token}";
@@ -52,6 +72,11 @@ public class DigestAuthentication : IAuthentication
     public string? Password { get; set; }
 
     public void ApplyAuthentication(HttpRequestMessage requestMessage)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public string GetAuthenticationString()
     {
         throw new System.NotImplementedException();
     }

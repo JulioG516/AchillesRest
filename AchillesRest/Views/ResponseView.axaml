@@ -17,17 +17,36 @@
 
     <UserControl.Resources>
         <converters:StatusCodeToForegroundConverter x:Key="StatusCodeToForegroundConverter" />
+        <converters:AllTrueMultiConverter x:Key="AllTrueMultiConverter" />
     </UserControl.Resources>
 
+    <UserControl.Styles>
+        <Styles>
+            <Style Selector="TabItem">
+                <Setter Property="FontSize" Value="14" />
+                <!--  Selected state  -->
+                <!--  We don't use selector to PART_LayoutRoot, so developer can override selected item background with TabStripItem.Background  -->
+                <Style Selector="^:selected">
+                    <Setter Property="Background" Value="{DynamicResource TabItemHeaderBackgroundSelected}" />
+                    <Setter Property="Foreground" Value="{DynamicResource TabItemHeaderForegroundSelected}" />
+                </Style>
+                <Style Selector="^:selected /template/ Border#PART_SelectedPipe">
+                    <Setter Property="IsVisible" Value="True" />
+                    <Setter Property="Background" Value="GhostWhite" />
+                </Style>
+            </Style>
+        </Styles>
+    </UserControl.Styles>
+
+    
     <Grid RowDefinitions="25, *">
         <Panel Grid.Row="0"
                IsVisible="{Binding RequestService.Response.HttpMessage, 
                 Converter={x:Static ObjectConverters.IsNotNull}}">
             <Border CornerRadius="3.5" Background="#252422" BorderBrush="#e9e8e7  ">
                 <TextBlock
-
-                    Text="{Binding RequestService.Response.HttpMessage.StatusCode, FallbackValue='' }"
-                    Classes.Success="{Binding RequestService.Response.HttpMessage.IsSuccessStatusCode, FallbackValue='false'}">
+                    Text="{Binding RequestService.Response.HttpMessage.StatusCode, FallbackValue='', TargetNullValue='' }"
+                    Classes.Success="{Binding RequestService.Response.HttpMessage.IsSuccessStatusCode, FallbackValue='false', TargetNullValue='false'}">
                     <TextBlock.Styles>
 
                         <Style Selector="TextBlock.Success">
@@ -75,30 +94,48 @@
                 </PathIcon.Styles>
             </PathIcon>
 
-            <Grid IsVisible="{Binding !RequestService.IsLoading}">
-                <ae:TextEditor x:Name="textResponse"
-                               Margin="0"
-                               SyntaxHighlighting="jsonachilles"
-                               HorizontalScrollBarVisibility="Auto"
-                               VerticalScrollBarVisibility="Auto"
-                               FontFamily="{DynamicResource CodeFontFamily}"
-                               FontWeight="Normal"
-                               FontSize="16"
-                               WordWrap="False">
-                    <i:Interaction.Behaviors>
-                        <behaviors:DocumentTextBindingBehavior
-                            Text="{Binding RequestService.Response.Content, FallbackValue=''}" />
-                    </i:Interaction.Behaviors>
-                </ae:TextEditor>
-                
-                <Button
-                    IsVisible="{Binding RequestService.Response.Content, Converter={x:Static ObjectConverters.IsNotNull}}"
-                    Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top"
-                    Command="{Binding ClipboardCopyCommand}"
-                    >
-                    Copy
-                </Button>
-            </Grid>
+            <Panel>
+                <Panel.IsVisible>
+                    <MultiBinding Converter="{StaticResource AllTrueMultiConverter}">
+                        <Binding Path="RequestService.Response.HttpMessage"
+                                 Converter="{x:Static ObjectConverters.IsNotNull}" />
+                        <Binding Path="!RequestService.IsLoading" />
+                    </MultiBinding>
+                </Panel.IsVisible>
+                <TabControl SelectedIndex="{Binding SelectedTab}">
+                    <TabItem Header="Body">
+                        <Grid>
+                            <ae:TextEditor x:Name="textResponse"
+                                           Margin="0"
+                                           SyntaxHighlighting="jsonachilles"
+                                           HorizontalScrollBarVisibility="Auto"
+                                           VerticalScrollBarVisibility="Auto"
+                                           FontFamily="{DynamicResource CodeFontFamily}"
+                                           FontWeight="Normal"
+                                           FontSize="16"
+                                           WordWrap="False">
+                                <i:Interaction.Behaviors>
+                                    <behaviors:DocumentTextBindingBehavior
+                                        Text="{Binding RequestService.Response.Content, FallbackValue=''}" />
+                                </i:Interaction.Behaviors>
+                            </ae:TextEditor>
+
+                            <Button
+                                IsVisible="{Binding RequestService.Response.Content, Converter={x:Static ObjectConverters.IsNotNull}}"
+                                Margin="10" HorizontalAlignment="Right" VerticalAlignment="Top"
+                                Command="{Binding ClipboardCopyCommand}"
+                                ToolTip.Tip="Copy the response.">
+                                <PathIcon Width="15" Height="15"
+                                          Data="{StaticResource CopyRegular}" />
+
+                            </Button>
+                        </Grid>
+                    </TabItem>
+                    <TabItem Header="Headers">
+
+                    </TabItem>
+                </TabControl>
+            </Panel>
 
 
             <!-- <ScrollViewer> -->

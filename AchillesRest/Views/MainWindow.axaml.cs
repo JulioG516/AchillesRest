@@ -1,3 +1,4 @@
+using System.Reactive;
 using AchillesRest.Helpers;
 using AchillesRest.ViewModels;
 using Avalonia;
@@ -29,6 +30,8 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
                 if (clipboard != null)
                     await clipboard.SetTextAsync(interaction.Input);
             }
+
+            interaction.SetOutput(Unit.Default);
         });
     }
 }

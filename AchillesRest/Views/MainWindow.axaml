@@ -35,7 +35,7 @@
         
         
         <DockPanel Margin="0 , 25, 0, 0">
-            <Menu Height="20" Background="Transparent" DockPanel.Dock="Top">
+            <Menu CornerRadius="2.0" Height="20" Background="DimGray" DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Open..."></MenuItem>
                     <Separator/>
