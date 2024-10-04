@@ -43,6 +43,14 @@ public class RequestViewModel : ViewModelBase
         //=> this.RaiseAndSetIfChanged(ref _endpoint, value);
     }
 
+    private SupportedLanguagesGeneration? _selectedLanguageGeneration = SupportedLanguagesGeneration.CSharp;
+
+    public SupportedLanguagesGeneration? SelectedLanguageGeneration
+    {
+        get => _selectedLanguageGeneration;
+        set => this.RaiseAndSetIfChanged(ref _selectedLanguageGeneration, value);
+    }
+
     private string? _queryEndpoint;
 
     public string? QueryEndpoint
@@ -61,39 +69,9 @@ public class RequestViewModel : ViewModelBase
 
     public void UpdateGeneratedCode()
     {
-        var generator = CodeGeneratorFactory.GetCodeGenerator(SupportedLanguagesGeneration.CSharp);
+        var generator = CodeGeneratorFactory.GetCodeGenerator(SelectedLanguageGeneration!.Value);
         Debug.WriteLine("Gerei o codiog");
         GeneratedCode = generator.GenerateCode(Action!.Value, Endpoint!, Headers.ToList(), Authentication);
-
-
-//         string method = Action switch
-//         {
-//             EnumActions.GET => "HttpMethod.Get",
-//             EnumActions.POST => "HttpMethod.Post",
-//             EnumActions.DELETE => "HttpMethod.Delete",
-//             EnumActions.HEAD => "HttpMethod.Head",
-//             EnumActions.PUT => "HttpMethod.Put",
-//             EnumActions.PATCH => "HttpMethod.Patch",
-//             EnumActions.OPTIONS => "HttpMethod.Options",
-//             _ => throw new InvalidOperationException("Invalid Request Action.")
-//         };
-//
-//         string headers = string.Empty;
-//
-//         if (Headers.Count > 0)
-//         {
-//             headers = string.Join(Environment.NewLine,
-//                 Headers.Where(x => x.Enabled).Select(header =>
-//                     $@"requestMessage.Headers.Add(""{header.Key}"", ""{header.Value}"");"));
-//         }
-//
-//         GeneratedCode = $@"
-// var client = new HttpClient();
-// var requestMessage = new HttpRequestMessage({method}, ""{Endpoint}"");
-//
-// {headers}
-//
-// var response = await client.SendAsync(requestMessage);";
     }
 
 
@@ -129,6 +107,7 @@ public class RequestViewModel : ViewModelBase
     {
     }
 
+    //TODO: Add the supported language enum to the Request Model.
     public RequestViewModel(Request request)
     {
         Name = request.Name;

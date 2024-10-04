@@ -20,6 +20,8 @@ public class RequestDetailsViewModel : ViewModelBase
 
     public RequestDetailsViewModel()
     {
+        SupportedLanguagesGenerations = new ObservableCollection<SupportedLanguagesGeneration>(Enum.GetValues(typeof(SupportedLanguagesGeneration)).Cast<SupportedLanguagesGeneration>());
+        
         RequestService = Locator.Current.GetService<RequestService>()!;
         _requests = new Dictionary<RequestViewModel, int?>();
 
@@ -48,7 +50,7 @@ public class RequestDetailsViewModel : ViewModelBase
                 SelectedTab = _requests!.GetValueOrDefault(request, 0);
 
                 // Subscribe to Action and Endpoint changes
-                request.WhenAnyValue(r => r.Action, r => r.Endpoint)
+                request.WhenAnyValue(r => r.Action, r => r.Endpoint, r => r.SelectedLanguageGeneration)
                     .CombineLatest(this.WhenAnyValue(x => x.SelectedTab))
                     .Where(tuple => tuple.Second == 4) // Only when SelectedTab is 4
                     .Subscribe(_ => request.UpdateGeneratedCode());
@@ -61,6 +63,9 @@ public class RequestDetailsViewModel : ViewModelBase
         //     .Subscribe(_ => RequestService.SelectedRequest?.UpdateGeneratedCode());
     }
 
+    public ObservableCollection<SupportedLanguagesGeneration> SupportedLanguagesGenerations { get; set; }
+
+    
     public RequestService RequestService { get; }
 
     public ICommand AddHeaderCommand { get; }

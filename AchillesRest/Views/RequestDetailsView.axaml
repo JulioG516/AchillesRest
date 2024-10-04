@@ -155,14 +155,27 @@
                 </ae:TextEditor>
             </TabItem>
 
-            <TabItem Header="Generated Code">
-                <Grid>
-                    <SelectableTextBlock
+            <TabItem Header="Generated Code" IsSelected="True">
+                <Grid Grid.RowDefinitions="30, *">
+                    <ComboBox Grid.Row="0" MinWidth="120"
+                              VerticalContentAlignment="Center"
+                              HorizontalContentAlignment="Center"
+                              SelectedItem="{Binding RequestService.SelectedRequest.SelectedLanguageGeneration, 
+                                     FallbackValue=''}"
+                              ItemsSource="{Binding SupportedLanguagesGenerations}"
+                              DisplayMemberBinding="{Binding Converter={StaticResource EnumToStringConverter}}"
+                              Margin="15, 0, 15, 0">
+
+                    </ComboBox>
+                    
+                    <SelectableTextBlock Grid.Row="1"
                         Text="{Binding RequestService.SelectedRequest.GeneratedCode,
                  FallbackValue=''}">
                     </SelectableTextBlock>
 
-                    <Button HorizontalAlignment="Right"
+
+                    
+                    <Button Grid.Row="1" HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Command="{Binding CopyGeneratedCodeCommand}"
                             ToolTip.Tip="Copy the generated code.">

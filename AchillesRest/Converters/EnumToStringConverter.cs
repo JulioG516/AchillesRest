@@ -17,7 +17,7 @@ public class EnumToStringConverter : IValueConverter
 
         if (value.GetType().IsEnum)
         {
-            return ((Enum)value).GetDescriptionAttribute(typeof(EnumAuthTypes));
+            return ((Enum)value).GetDescriptionAttribute(value.GetType()); // typeof(EnumAuthTypes)
         }
 
         return value.ToString() ?? string.Empty;
