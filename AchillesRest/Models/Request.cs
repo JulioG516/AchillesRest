@@ -13,10 +13,10 @@ public class Request
     public IAuthentication? Authentication { get; set; }
 
     public List<KeyValueParam> Headers { get; set; } = new();
-    
+
     public List<KeyValueParam> QueryParams { get; set; } = new();
 
-    public string? Body { get; set; }
+    public SupportedLanguagesGeneration SelectedLanguagesGeneration { get; set; } = SupportedLanguagesGeneration.CSharp;
 
-    // TODO:  Auth, Headers, Params
+    public string? Body { get; set; }
 }

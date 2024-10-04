@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
-using AchillesRest.Helpers;
 using AchillesRest.Models;
 using AchillesRest.Models.Authentications;
 using AchillesRest.Models.CodeGenerations;
@@ -43,7 +42,7 @@ public class RequestViewModel : ViewModelBase
         //=> this.RaiseAndSetIfChanged(ref _endpoint, value);
     }
 
-    private SupportedLanguagesGeneration? _selectedLanguageGeneration = SupportedLanguagesGeneration.CSharp;
+    private SupportedLanguagesGeneration? _selectedLanguageGeneration;
 
     public SupportedLanguagesGeneration? SelectedLanguageGeneration
     {
@@ -71,7 +70,8 @@ public class RequestViewModel : ViewModelBase
     {
         var generator = CodeGeneratorFactory.GetCodeGenerator(SelectedLanguageGeneration!.Value);
         Debug.WriteLine("Gerei o codiog");
-        GeneratedCode = generator.GenerateCode(Action!.Value, Endpoint!, Headers.ToList(), Authentication);
+        GeneratedCode = generator.GenerateCode(Action!.Value, 
+            Endpoint!, Body, Headers.ToList(), Authentication);
     }
 
 
@@ -106,8 +106,7 @@ public class RequestViewModel : ViewModelBase
     public RequestViewModel()
     {
     }
-
-    //TODO: Add the supported language enum to the Request Model.
+    
     public RequestViewModel(Request request)
     {
         Name = request.Name;
@@ -122,9 +121,10 @@ public class RequestViewModel : ViewModelBase
         QueryParams = new ObservableCollection<KeyValueParamViewModel>(
             request.QueryParams.Select(q => new KeyValueParamViewModel(q)));
 
+        SelectedLanguageGeneration = request.SelectedLanguagesGeneration;
 
         // To use in Generated Code
-        //
+
         // this.WhenAnyValue(x => x.Action, x
         //         => x.Endpoint)
         //     .Subscribe(_ => UpdateGeneratedCode());

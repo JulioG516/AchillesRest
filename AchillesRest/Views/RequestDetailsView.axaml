@@ -136,7 +136,9 @@
 
             <TabItem Header="Body">
                 <!-- <TextBox Text="{Binding  RequestService.SelectedRequest.Body, FallbackValue=''}" -->
-                <!--          TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True" /> -->
+                <!--          TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True"
+                                               SyntaxHighlighting="jsonachilles"
+                 /> -->
 
                 <ae:TextEditor x:Name="textCode"
                                Margin="0"
@@ -155,7 +157,7 @@
                 </ae:TextEditor>
             </TabItem>
 
-            <TabItem Header="Generated Code" IsSelected="True">
+            <TabItem Header="Generated Code" >
                 <Grid Grid.RowDefinitions="30, *">
                     <ComboBox Grid.Row="0" MinWidth="120"
                               VerticalContentAlignment="Center"

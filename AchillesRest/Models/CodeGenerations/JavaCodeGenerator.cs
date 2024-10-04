@@ -9,7 +9,8 @@ namespace AchillesRest.Models.CodeGenerations;
 
 public class JavaCodeGenerator : CodeGenerator
 {
-    public override string GenerateCode(EnumActions action, string endpoint, List<KeyValueParamViewModel> headers,
+    public override string GenerateCode(EnumActions action, string endpoint,
+        string? body, List<KeyValueParamViewModel> headers,
         IAuthentication? authentication)
     {
         string method = action switch
@@ -24,26 +25,56 @@ public class JavaCodeGenerator : CodeGenerator
             _ => throw new InvalidOperationException("Invalid Request Action.")
         };
 
-        string headersString = string.Empty;
+
+        string setAuthentication = string.Empty;
+        if (authentication != null)
+        {
+            setAuthentication = $@".setHeader(""Authorization"", ""{authentication.GetAuthenticationString()}"")";
+        }
+
+
+        string setHeaders = string.Empty;
         if (headers.Count > 0)
         {
-            headersString = string.Join(Environment.NewLine,
+            setHeaders = string.Join(Environment.NewLine,
                 headers.Where(x => x.Enabled).Select(header =>
-                    $@"request.setHeader(""{header.Key}"", ""{header.Value}"");"));
+                    $@".setHeader(""{header.Key}"", ""{header.Value}"")"));
         }
-        
+
+        string methodPublisher = "HttpRequest.BodyPublishers.noBody()";
+        if (!string.IsNullOrEmpty(body) &&
+            (action == EnumActions.POST
+             || action == EnumActions.PUT
+             || action == EnumActions.PATCH))
+        {
+            string escapedBody = FormatBody(body);
+            methodPublisher = $@"HttpRequest.BodyPublishers.ofString(""{escapedBody}"")";
+        }
+
         string generatedCode = $@"
 HttpClient client = HttpClient.newHttpClient();
 HttpRequest request = HttpRequest.newBuilder()
-    .uri(new URI(""{endpoint}""))
-    .method(""{method}"")
-    .build();
+.uri(new URI(""{endpoint}""))
+.method(""{method}"", {methodPublisher})";
 
-{headersString}
+        if (!string.IsNullOrEmpty(setAuthentication))
+        {
+            generatedCode += @$"
+{setAuthentication}";
+        }
+
+        if (!string.IsNullOrEmpty(setHeaders))
+        {
+            generatedCode += @$"
+{setHeaders}";
+        }
+
+
+        generatedCode += @"
+.build();
 
 HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-System.out.println(response.body());
-";
+System.out.println(response.body()); ";
 
         return generatedCode;
     }

@@ -6,7 +6,6 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AchillesRest.Helpers;
-using AchillesRest.Models;
 using AchillesRest.Models.Enums;
 using AchillesRest.Services;
 using ReactiveUI;
@@ -20,8 +19,10 @@ public class RequestDetailsViewModel : ViewModelBase
 
     public RequestDetailsViewModel()
     {
-        SupportedLanguagesGenerations = new ObservableCollection<SupportedLanguagesGeneration>(Enum.GetValues(typeof(SupportedLanguagesGeneration)).Cast<SupportedLanguagesGeneration>());
-        
+        SupportedLanguagesGenerations =
+            new ObservableCollection<SupportedLanguagesGeneration>(Enum.GetValues(typeof(SupportedLanguagesGeneration))
+                .Cast<SupportedLanguagesGeneration>());
+
         RequestService = Locator.Current.GetService<RequestService>()!;
         _requests = new Dictionary<RequestViewModel, int?>();
 
@@ -57,6 +58,11 @@ public class RequestDetailsViewModel : ViewModelBase
             });
 
 
+        // TODO: Combobox to choose in body tab between Text, JavaScript, Json, HTML, XML
+        // TODO: After change the Content-Type. to Application/{type}
+
+        
+
         // this.WhenAnyValue(x => x.SelectedTab)
         //     .DistinctUntilChanged()
         //     .Where(index => index == 4)
@@ -65,7 +71,7 @@ public class RequestDetailsViewModel : ViewModelBase
 
     public ObservableCollection<SupportedLanguagesGeneration> SupportedLanguagesGenerations { get; set; }
 
-    
+
     public RequestService RequestService { get; }
 
     public ICommand AddHeaderCommand { get; }
