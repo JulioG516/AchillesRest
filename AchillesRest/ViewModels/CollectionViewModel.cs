@@ -4,6 +4,7 @@ using System.Linq;
 using AchillesRest.Models;
 using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
+using LiteDB;
 using ReactiveUI;
 
 namespace AchillesRest.ViewModels;
@@ -52,8 +53,18 @@ public class CollectionViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _description, value);
     }
 
+    private ObjectId? _id;
+
+    public ObjectId? Id
+    {
+        get => _id;
+        set => this.RaiseAndSetIfChanged(ref _id, value);
+    }
+
     public CollectionViewModel(Collection collection)
     {
+        Id = collection.Id ?? ObjectId.NewObjectId();
+
         Name = collection.Name;
         Requests = new ObservableCollection<RequestViewModel>(
             collection.Requests?.Select(r => new RequestViewModel(r)) ?? new List<RequestViewModel>()

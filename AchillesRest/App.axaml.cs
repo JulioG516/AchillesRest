@@ -17,10 +17,11 @@ public partial class App : Application
     {
         AvaloniaXamlLoader.Load(this);
 
+        Locator.CurrentMutable.Register(() => new LiteDbService(), typeof(IDbService));
         Locator.CurrentMutable.RegisterConstant(new RequestService(), typeof(RequestService));
         Locator.CurrentMutable.Register(() => new MenuCollectionsViewModel(), typeof(MenuCollectionsViewModel));
 
-
+        
         // Loads an custom Json syntax highlight at AvaloniaEdit.
         var uri = new Uri("avares://AchillesRest/Assets/Json.xshd");
         using (var stream = AssetLoader.Open(uri))
@@ -33,6 +34,7 @@ public partial class App : Application
                         AvaloniaEdit.Highlighting.HighlightingManager.Instance));
             }
         }
+
     }
 
     public override void OnFrameworkInitializationCompleted()

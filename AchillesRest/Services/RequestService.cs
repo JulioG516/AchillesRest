@@ -14,14 +14,25 @@ using AchillesRest.ViewModels;
 using DynamicData;
 using JsonFormatterPlus;
 using ReactiveUI;
+using Splat;
 
 namespace AchillesRest.Services;
 
 public class RequestService : ReactiveObject
 {
+    private readonly IDbService _dbService;
+
     public RequestService()
     {
+        _dbService = Locator.Current.GetService<IDbService>()!;
+
+
+        var collections = _dbService.RetrieveCollections();
+
+        SourceList.AddRange(collections.Select(c => new CollectionViewModel(c)));
+        
         SourceList.AddRange(FillCollection());
+
 
         // For mantain the Authentication properly. - Collection ViewModel
         this.WhenAnyValue(x => x.SelectedCollection!.SelectedAuthType)
@@ -68,6 +79,12 @@ public class RequestService : ReactiveObject
                     }
                 }
             });
+    }
+
+
+    public void SaveCollections()
+    {
+        _dbService.SaveCollection(Collections.Select(c => new Collection(c)).ToList());
     }
 
     private IAuthentication? GetAuthenticationFromEnum(EnumAuthTypes? authType)
@@ -182,10 +199,7 @@ public class RequestService : ReactiveObject
     public CollectionViewModel? SelectedCollection
     {
         get => _selectedCollection;
-        set
-        {
-            this.RaiseAndSetIfChanged(ref _selectedCollection, value);
-        }
+        set { this.RaiseAndSetIfChanged(ref _selectedCollection, value); }
     }
 
     private AchillesHttpResponse? _response;

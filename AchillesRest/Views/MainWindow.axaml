@@ -39,6 +39,8 @@
                 <MenuItem Header="_File">
                     <MenuItem Header="_Open..."></MenuItem>
                     <Separator/>
+                    <MenuItem Header="_Open..." Command="{Binding SaveCommand}"></MenuItem>
+                    <Separator/>
                     <MenuItem Header="_Import Collection"></MenuItem>
                 </MenuItem>
             </Menu>

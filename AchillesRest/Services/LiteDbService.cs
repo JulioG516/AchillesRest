@@ -1,0 +1,57 @@
+﻿using System;
+using System.Collections.Generic;
+using AchillesRest.Models;
+using LiteDB;
+
+namespace AchillesRest.Services;
+
+public class LiteDbService : IDbService
+{
+    private readonly Lazy<LiteDatabase> _lazyDb;
+    private LiteDatabase Database => _lazyDb.Value;
+
+    public LiteDbService()
+    {
+        var dbPath = AppContext.BaseDirectory + @"\achillesrest.db";
+
+        _lazyDb = new Lazy<LiteDatabase>(() => new LiteDatabase(dbPath));
+    }
+
+
+    public bool SaveCollection(Collection collection)
+    {
+        var col = Database.GetCollection<Collection>("Collections");
+        var id = col.Insert(collection);
+
+        return id != null;
+    }
+
+    public bool SaveCollection(List<Collection> collections)
+    {
+        var col = Database.GetCollection<Collection>("Collections");
+        var id = col.InsertBulk(collections);
+
+        return id > 0;
+    }
+
+    public bool SaveRequest(Request request)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public bool SaveRequest(List<Request> requests)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public List<Collection> RetrieveCollections()
+    {
+        var col = Database.GetCollection<Collection>("Collections");
+        return col.Query().ToList();
+    }
+
+    public List<Request> RetrieveRequests()
+    {
+        throw new System.NotImplementedException();
+    }
+}
