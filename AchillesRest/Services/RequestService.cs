@@ -348,11 +348,6 @@ public class RequestService : ReactiveObject
             Response!.Headers = new ObservableCollection<KeyValueParamViewModel>(responseHeaders);
 
             Debug.WriteLine(responseHeaders.Count);
-
-            // var responseContent = await responseMessage.Content.ReadAsStringAsync();
-            // ResponseContent = responseContent;
-
-            // Store the response content in the dictionary
         }
         catch (HttpRequestException e)
         {
@@ -366,12 +361,14 @@ public class RequestService : ReactiveObject
         {
             IsLoading = false;
 
+            // Store the response content in the dictionary
             _responses[request] = Response;
         }
     }
 
     private static List<CollectionViewModel> FillCollection()
     {
+        
         return new List<CollectionViewModel>
         {
             new(new Collection
