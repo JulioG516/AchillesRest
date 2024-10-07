@@ -32,6 +32,10 @@ public partial class MainWindow : ReactiveWindow<MainWindowViewModel>
             }
 
             interaction.SetOutput(Unit.Default);
+            
         });
     }
+
+
+
 }

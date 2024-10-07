@@ -135,7 +135,7 @@ public class MenuCollectionsViewModel : ViewModelBase, IDisposable
 
     private void CreateCollection()
     {
-        RequestService.CreateCollection();
+        RequestService.AddCollection();
     }
 
     private string? _searchCollectionText;

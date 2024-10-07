@@ -14,7 +14,10 @@ public class LiteDbService : IDbService
     {
         var dbPath = AppContext.BaseDirectory + @"\achillesrest.db";
 
-        _lazyDb = new Lazy<LiteDatabase>(() => new LiteDatabase(dbPath));
+        var connectionString = $"Filename={dbPath}; Connection=Shared;";
+        
+        
+        _lazyDb = new Lazy<LiteDatabase>(() => new LiteDatabase(connectionString));
     }
 
 
@@ -29,7 +32,7 @@ public class LiteDbService : IDbService
     public bool SaveCollection(List<Collection> collections)
     {
         var col = Database.GetCollection<Collection>("Collections");
-        var id = col.InsertBulk(collections);
+        var id = col.Upsert(collections); // InsertBulk
 
         return id > 0;
     }

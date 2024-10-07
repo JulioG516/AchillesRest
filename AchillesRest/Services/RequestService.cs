@@ -30,8 +30,8 @@ public class RequestService : ReactiveObject
         var collections = _dbService.RetrieveCollections();
 
         SourceList.AddRange(collections.Select(c => new CollectionViewModel(c)));
-        
-        SourceList.AddRange(FillCollection());
+
+        // SourceList.AddRange(FillCollection());
 
 
         // For mantain the Authentication properly. - Collection ViewModel
@@ -79,11 +79,28 @@ public class RequestService : ReactiveObject
                     }
                 }
             });
+
+        // Auto-save at regular intervals
+        Observable.Interval(TimeSpan.FromMinutes(5))
+            .Where(_ => Collections.Any(c => c.HasModifications))
+            .Subscribe(_ => SaveChanges());
     }
 
-
-    public void SaveCollections()
+    public void SaveChanges()
     {
+        Debug.WriteLine("Saving...");
+
+        SaveCollections();
+
+        foreach (var collection in Collections)
+        {
+            collection.HasModifications = false;
+        }
+    }
+
+    private void SaveCollections()
+    {
+        Debug.WriteLine("Saving to DB...");
         _dbService.SaveCollection(Collections.Select(c => new Collection(c)).ToList());
     }
 
@@ -124,7 +141,7 @@ public class RequestService : ReactiveObject
     public ReadOnlyObservableCollection<CollectionViewModel> Collection = null!;
     public ReadOnlyObservableCollection<CollectionViewModel> Collections => Collection;
 
-    public void CreateCollection()
+    public void AddCollection()
     {
         SourceList.Edit((update) =>
         {
@@ -134,6 +151,9 @@ public class RequestService : ReactiveObject
                 Requests = new List<Request>()
             }));
         });
+
+        // Save after add
+        SaveChanges();
     }
 
     public void DeleteCollection(CollectionViewModel collectionViewModel)
@@ -142,6 +162,9 @@ public class RequestService : ReactiveObject
 
         if (SelectedCollection == collectionViewModel)
             SelectedCollection = null;
+
+        // Save after delete
+        SaveChanges();
     }
 
     public void AddRequest(CollectionViewModel collectionViewModel)
@@ -156,6 +179,9 @@ public class RequestService : ReactiveObject
                 Name = "Unnamed"
             }));
         }
+
+        // Save after add
+        SaveChanges();
     }
 
     public void DeleteRequest(RequestViewModel request)
@@ -170,6 +196,9 @@ public class RequestService : ReactiveObject
             if (Equals(SelectedRequest, request))
                 SelectedRequest = null;
         }
+
+        // Save after delete
+        SaveChanges();
     }
 
     private readonly Dictionary<RequestViewModel, AchillesHttpResponse?> _responses = new();

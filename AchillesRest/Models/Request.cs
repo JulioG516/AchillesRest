@@ -32,6 +32,7 @@ public class Request
     {
         Name = requestViewModel.Name;
         Action = requestViewModel.Action;
+        Body = requestViewModel.Body;
         Endpoint = requestViewModel.Endpoint;
         SelectedAuthType = requestViewModel.SelectedAuthType;
         Authentication = requestViewModel.Authentication;

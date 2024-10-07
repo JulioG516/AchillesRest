@@ -1,9 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Linq;
 using AchillesRest.Models;
 using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
+using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
+using DynamicData;
+using DynamicData.Binding;
 using LiteDB;
 using ReactiveUI;
 
@@ -61,6 +67,14 @@ public class CollectionViewModel : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _id, value);
     }
 
+    private bool _hasModifications = false;
+
+    public bool HasModifications
+    {
+        get => _hasModifications;
+        set => this.RaiseAndSetIfChanged(ref _hasModifications, value);
+    }
+
     public CollectionViewModel(Collection collection)
     {
         Id = collection.Id ?? ObjectId.NewObjectId();
@@ -72,6 +86,24 @@ public class CollectionViewModel : ViewModelBase
         SelectedAuthType = collection.SelectedAuthType;
         Authentication = collection.Authentication;
         Description = collection.Description;
+
+        Requests
+            .ToObservableChangeSet()
+            .AutoRefreshOnObservable(request =>
+                request.WhenAnyValue(x => x.Name,
+                    x => x.Action,
+                    x => x.Authentication,
+                    x => x.Body,
+                    x => x.Endpoint
+                ))
+            .Subscribe(_ => HasModifications = true);
+
+        HasModifications = false;
+    }
+
+    private void SaveChanges()
+    {
+        HasModifications = false;
     }
 
     public override string ToString()
