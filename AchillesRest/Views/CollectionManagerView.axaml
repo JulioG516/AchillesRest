@@ -5,7 +5,6 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AchillesRest.Views.CollectionManagerView"
              xmlns:vm="using:AchillesRest.ViewModels"
-             xmlns:authmodels="using:AchillesRest.Models.Authentications"
              xmlns:converters="clr-namespace:AchillesRest.Converters"
              x:DataType="vm:CollectionManagerViewModel"
              xmlns:md="https://github.com/whistyun/Markdown.Avalonia">
@@ -70,32 +69,61 @@
 
         <Grid Grid.Row="1">
             <TabControl>
-                <TabItem Header="Description">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <PathIcon Data="{StaticResource TextDescriptionRegular}"
+                                      Width="15"
+                                      Height="15"
+                                      VerticalAlignment="Center"
+                                      Margin="0, 0, 5, 0" />
+                            <TextBlock VerticalAlignment="Center" Text="Description" />
+                        </StackPanel>
+                    </TabItem.Header>
+
+
                     <Grid RowDefinitions="50, *">
                         <Panel Grid.Row="0">
-                            <Button Content="Edit" VerticalContentAlignment="Center"
-                                    HorizontalContentAlignment="Center" Width="50"
+                            <Button VerticalContentAlignment="Center"
+                                    HorizontalContentAlignment="Center" Width="70"
                                     HorizontalAlignment="Right"
                                     ToolTip.Tip="Edit the collection description markdown."
                                     IsVisible="{Binding !InEditDescriptionMode}"
                                     Command="{Binding EditDescriptionMdCommand}">
 
+                                <StackPanel Orientation="Horizontal">
+                                    <PathIcon Data="{StaticResource DocumentEditRegular}"
+                                              Width="15"
+                                              Height="15"
+                                              Margin="0, 0, 5, 0" />
+
+                                    <TextBlock VerticalAlignment="Center" Text="Edit." />
+                                </StackPanel>
                             </Button>
 
-                            <Button Content="Done." VerticalContentAlignment="Center"
-                                    HorizontalContentAlignment="Center" Width="50"
+                            <Button VerticalContentAlignment="Center"
+                                    HorizontalContentAlignment="Center" Width="70"
                                     HorizontalAlignment="Right"
                                     ToolTip.Tip="Save the description and exit."
                                     IsVisible="{Binding InEditDescriptionMode}"
                                     Command="{Binding ExitEditDescriptionMdCommand}">
+
+                                <StackPanel Orientation="Horizontal">
+                                    <PathIcon Data="{StaticResource CheckmarkRegular}"
+                                              Width="15"
+                                              Height="15"
+                                              Margin="0, 0, 5, 0" />
+
+                                    <TextBlock VerticalAlignment="Center" Text="Done." />
+                                </StackPanel>
 
                             </Button>
                         </Panel>
 
 
                         <Panel Grid.Row="1">
-                            <TextBox AcceptsReturn="True" 
-                                IsVisible="{Binding  InEditDescriptionMode}"
+                            <TextBox AcceptsReturn="True"
+                                     IsVisible="{Binding  InEditDescriptionMode}"
                                      Text="{Binding RequestService.SelectedCollection.Description,
                              FallbackValue=''}" />
 
@@ -107,7 +135,18 @@
 
                     </Grid>
                 </TabItem>
-                <TabItem Header="Authorization">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <PathIcon Data="{StaticResource LockRegular}"
+                                      Width="15"
+                                      Height="15"
+                                      VerticalAlignment="Center"
+                                      Margin="0, 0, 5, 0" />
+                            <TextBlock VerticalAlignment="Center" Text="Authorization" />
+                        </StackPanel>
+                    </TabItem.Header>
+
                     <Grid RowDefinitions="50, *">
                         <ComboBox Grid.Row="0" MinWidth="120"
                                   SelectedItem="{Binding RequestService.SelectedCollection.SelectedAuthType, FallbackValue=''}"
