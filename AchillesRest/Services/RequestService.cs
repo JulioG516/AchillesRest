@@ -347,7 +347,7 @@ public class RequestService : ReactiveObject
 
             Response!.Headers = new ObservableCollection<KeyValueParamViewModel>(responseHeaders);
 
-            Debug.WriteLine(responseHeaders.Count);
+            Debug.WriteLine($"Response Headers {responseHeaders.Count}");
         }
         catch (HttpRequestException e)
         {
@@ -368,7 +368,6 @@ public class RequestService : ReactiveObject
 
     private static List<CollectionViewModel> FillCollection()
     {
-        
         return new List<CollectionViewModel>
         {
             new(new Collection

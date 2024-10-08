@@ -57,7 +57,7 @@ public partial class App : Application
     }
 
     // Save the changes made upon the collections and requests.
-    protected virtual async void This_ShutdownRequested(object? sender, ShutdownRequestedEventArgs e)
+    protected virtual void This_ShutdownRequested(object? sender, ShutdownRequestedEventArgs e)
     {
         var requestService = Locator.Current.GetService<RequestService>()!;
 

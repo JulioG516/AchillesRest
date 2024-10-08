@@ -161,22 +161,23 @@
                         </Grid>
                     </TabItem>
                     <TabItem Header="Headers">
-                        <ItemsControl ItemsSource="{Binding RequestService.Response.Headers, FallbackValue=''}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="vm:KeyValueParamViewModel">
-                                    <Grid ColumnDefinitions="4*, 4*" Margin="0, 5, 0, 5">
-                                        <TextBox IsReadOnly="True" Grid.Column="0" Text="{Binding Key}"
-                                                 Margin="5, 0,0,0" />
-                                        <TextBox IsReadOnly="True" Grid.Column="1" Text="{Binding Value}"
-                                                 Margin="5, 0, 0,0 " />
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <ScrollViewer>
+                            <ItemsControl ItemsSource="{Binding RequestService.Response.Headers, FallbackValue=''}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate DataType="vm:KeyValueParamViewModel">
+                                        <Grid ColumnDefinitions="4*, 4*" Margin="0, 5, 0, 5">
+                                            <TextBox IsReadOnly="True" Grid.Column="0" Text="{Binding Key}"
+                                                     Margin="5, 0,0,0" />
+                                            <TextBox IsReadOnly="True" Grid.Column="1" Text="{Binding Value}"
+                                                     Margin="5, 0, 0,0 " />
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
                     </TabItem>
                 </TabControl>
             </Panel>
-
         </Panel>
     </Grid>
 </UserControl>
