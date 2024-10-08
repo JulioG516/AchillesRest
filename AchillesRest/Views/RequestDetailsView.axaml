@@ -40,10 +40,31 @@
 
     <Grid>
         <TabControl SelectedIndex="{Binding SelectedTab}">
-            <TabItem Header="Query Params">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <PathIcon Data="{StaticResource SearchRegular}"
+                                  Width="15"
+                                  Height="15"
+                                  VerticalAlignment="Center"
+                                  Margin="0, 0, 5, 0" />
+                        <TextBlock VerticalAlignment="Center">Query Params</TextBlock>
+                    </StackPanel>
+                </TabItem.Header>
+
                 <Grid RowDefinitions="50, *">
                     <Panel Grid.Row="0">
-                        <Button Command="{Binding AddQueryParamCommand}" Content="New Query Param"></Button>
+                        <Button
+                            Command="{Binding AddQueryParamCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <PathIcon Data="{StaticResource AddRegular}"
+                                          Width="15" Height="15"
+                                          Margin="0, 0, 5, 0" />
+                                <TextBlock Text="New Query Param" />
+                            </StackPanel>
+
+
+                        </Button>
                     </Panel>
 
                     <ScrollViewer Grid.Row="1">
@@ -75,7 +96,18 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Authorization">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <PathIcon Data="{StaticResource LockRegular}"
+                                  Width="15"
+                                  Height="15"
+                                  VerticalAlignment="Center"
+                                  Margin="0, 0, 5, 0" />
+                        <TextBlock VerticalAlignment="Center" Text="Authorization" />
+                    </StackPanel>
+                </TabItem.Header>
+
                 <Grid RowDefinitions="50, *">
                     <ComboBox Grid.Row="0" MinWidth="120"
                               SelectedItem="{Binding RequestService.SelectedRequest.SelectedAuthType, FallbackValue=''}"
@@ -92,12 +124,27 @@
 
                 </Grid>
             </TabItem>
-            <TabItem Header="Headers">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <PathIcon Data="{StaticResource HeaderTagRegular}"
+                                  Width="15"
+                                  Height="15"
+                                  VerticalAlignment="Center"
+                                  Margin="0, 0, 5, 0" />
+                        <TextBlock VerticalAlignment="Center" Text="Headers" />
+                    </StackPanel>
+                </TabItem.Header>
                 <Grid RowDefinitions="50, *">
                     <Panel Grid.Row="0">
-                        <!-- <TextBlock FontSize="20" HorizontalAlignment="Center" Margin="0, 5, 0, 0" TextDecorations="Underline">Headers</TextBlock> -->
-
-                        <Button Command="{Binding AddHeaderCommand}" Content="New Header"></Button>
+                        <Button Command="{Binding AddHeaderCommand}">
+                            <StackPanel Orientation="Horizontal">
+                                <PathIcon Data="{StaticResource AddRegular}"
+                                          Width="15" Height="15"
+                                          Margin="0, 0, 5, 0" />
+                                <TextBlock Text="New Header" />
+                            </StackPanel>
+                        </Button>
 
                     </Panel>
 
@@ -134,11 +181,18 @@
 
             </TabItem>
 
-            <TabItem Header="Body">
-                <!-- <TextBox Text="{Binding  RequestService.SelectedRequest.Body, FallbackValue=''}" -->
-                <!--          TextWrapping="Wrap" AcceptsReturn="True" AcceptsTab="True"
-                                               SyntaxHighlighting="jsonachilles"
-                 /> -->
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <PathIcon Data="{StaticResource TextBoxRegular}"
+                                  Width="15"
+                                  Height="15"
+                                  VerticalAlignment="Center"
+                                  Margin="0, 0, 5, 0" />
+                        <TextBlock VerticalAlignment="Center" Text="Body" />
+                    </StackPanel>
+                </TabItem.Header>
+
 
                 <ae:TextEditor x:Name="textCode"
                                Margin="0"
@@ -157,8 +211,19 @@
                 </ae:TextEditor>
             </TabItem>
 
-            <TabItem Header="Generated Code" >
-                <Grid Grid.RowDefinitions="30, *">
+            <TabItem>
+                <TabItem.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <PathIcon Data="{StaticResource CodeRegular}"
+                                  Width="15"
+                                  Height="15"
+                                  VerticalAlignment="Center"
+                                  Margin="0, 0, 5, 0" />
+                        <TextBlock VerticalAlignment="Center" Text="Generated Code" />
+                    </StackPanel>
+                </TabItem.Header>
+
+                <Grid RowDefinitions="30, *">
                     <ComboBox Grid.Row="0" MinWidth="120"
                               VerticalContentAlignment="Center"
                               HorizontalContentAlignment="Center"
@@ -169,14 +234,13 @@
                               Margin="15, 0, 15, 0">
 
                     </ComboBox>
-                    
+
                     <SelectableTextBlock Grid.Row="1"
-                        Text="{Binding RequestService.SelectedRequest.GeneratedCode,
+                                         Text="{Binding RequestService.SelectedRequest.GeneratedCode,
                  FallbackValue=''}">
                     </SelectableTextBlock>
 
 
-                    
                     <Button Grid.Row="1" HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Command="{Binding CopyGeneratedCodeCommand}"

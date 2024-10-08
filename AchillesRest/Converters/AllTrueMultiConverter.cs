@@ -13,6 +13,6 @@ public class AllTrueMultiConverter : IMultiValueConverter
         if (values == null || values.Any(v => v == null || !(v is bool)))
             return false;
 
-        return values.All(v => (bool)v);
+        return values.All(v => (bool)(v ?? throw new ArgumentNullException(nameof(v))));
     }
 }
