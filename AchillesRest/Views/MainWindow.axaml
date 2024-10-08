@@ -48,10 +48,27 @@
                     </MenuItem>
                     <Separator />
                     <MenuItem Header="Import/Export">
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource MoreRegular}" Width="15" Height="15" />
+                        </MenuItem.Icon>
+                        
                         <MenuItem Header="Import collections"
-                                  Command="{Binding ImportCollectionsCommand}" />
+                                  Command="{Binding ImportCollectionsCommand}">
+                            <MenuItem.Icon>
+                                <PathIcon Data="{StaticResource ArrowImportRegular}" Width="15" Height="15" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+
                         <MenuItem Header="Export collections"
-                                  Command="{Binding ExportCollectionsCommand}" />
+                                  Command="{Binding ExportCollectionsCommand}">
+
+                            <MenuItem.Icon>
+                                <PathIcon Data="{StaticResource ArrowExportRegular}" Width="15" Height="15" />
+                            </MenuItem.Icon>
+                        </MenuItem>
+
+
                     </MenuItem>
                 </MenuItem>
             </Menu>
