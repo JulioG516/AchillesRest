@@ -2,22 +2,33 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Sockets;
 using System.Reactive.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
+using AchillesRest.Converters;
+using AchillesRest.Helpers;
 using AchillesRest.Models;
 using AchillesRest.Models.Authentications;
 using AchillesRest.Models.Enums;
 using AchillesRest.ViewModels;
 using DynamicData;
 using JsonFormatterPlus;
+using LiteDB;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using ReactiveUI;
 using Splat;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace AchillesRest.Services;
 
+/// <summary>
+/// The main class behind the business logic.
+/// </summary>
 public class RequestService : ReactiveObject
 {
     private readonly IDbService _dbService;
@@ -167,6 +178,80 @@ public class RequestService : ReactiveObject
         Debug.WriteLine(_dbService.DeleteCollection(new Collection(collectionViewModel)));
     }
 
+    public async Task ExportCollections()
+    {
+        var selectedFolder = await Interactions.GetFolderDialog.Handle("Select the location to export.");
+
+        if (string.IsNullOrEmpty(selectedFolder))
+            return;
+
+        var name = $"Exported Collections - {DateTime.Now:yyyy-MM-dd}.json";
+
+        var filePath = Path.Join(selectedFolder, name);
+
+        try
+        {
+            await using var stream = File.Create(filePath);
+
+            var options = new JsonSerializerOptions
+            {
+                Converters = { new ObjectIdConverter() }
+            };
+
+            var json = Collections.Select(c => new Collection(c));
+
+            await JsonSerializer.SerializeAsync(stream, json, options);
+
+            var box = MessageBoxManager.GetMessageBoxStandard("Success", $"File created at: {filePath}",
+                ButtonEnum.Ok, Icon.Success);
+
+            await box.ShowAsync();
+        }
+        catch (Exception)
+        {
+            var box = MessageBoxManager.GetMessageBoxStandard("Failure",
+                $"Failure creating the file, please try again later.",
+                ButtonEnum.Ok, Icon.Error);
+
+            await box.ShowAsync();
+        }
+    }
+
+
+    public async Task ImportCollections()
+    {
+        var file = await Interactions.GetFileDialog.Handle("Select the file you want to import.");
+
+        if (file == null)
+            return;
+
+        await using var stream = File.Open(file, FileMode.Open);
+
+        var options = new JsonSerializerOptions
+        {
+            Converters = { new ObjectIdConverter() }
+        };
+
+        var importedCollections = await JsonSerializer.DeserializeAsync<List<Collection>>(stream, options);
+
+        if (importedCollections != null)
+        {
+            foreach (var importedCol in importedCollections)
+            {
+                // Prevent duplicating the same col.
+                if (Collections.All(c => c.Id != importedCol.Id))
+                {
+                    SourceList.Edit((update)
+                        =>
+                    {
+                        update.Add(new CollectionViewModel(importedCol));
+                    });
+                }
+            }
+        }
+    }
+
+
     public void AddRequest(CollectionViewModel collectionViewModel)
     {
         var collection = Collections.FirstOrDefault(c => c.Equals(collectionViewModel));
@@ -278,6 +363,7 @@ public class RequestService : ReactiveObject
 
         SelectedRequest.QueryParams.Remove(queryParam);
     }
+
 
     public async Task SendRequest()
     {

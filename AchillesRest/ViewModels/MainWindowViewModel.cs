@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+﻿using System.Collections.ObjectModel;
 using System.Reactive;
+using System.Threading.Tasks;
 using System.Windows.Input;
-using AchillesRest.Models;
 using AchillesRest.Services;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using DynamicData.Binding;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ReactiveUI;
@@ -28,11 +25,27 @@ public class MainWindowViewModel : ViewModelBase, IScreen
         RequestService.SaveChanges();
     }
 
+    public ICommand ImportCollectionsCommand { get; }
+
+    private async Task ImportCollections()
+    {
+        await RequestService.ImportCollections();
+    }
+
+    public ICommand ExportCollectionsCommand { get; }
+
+    private async Task ExportCollections()
+    {
+        await RequestService.ExportCollections();
+    }
+
     public RequestService RequestService;
 
     public MainWindowViewModel()
     {
         SaveCommand = ReactiveCommand.Create(SaveCollections);
+        ImportCollectionsCommand = ReactiveCommand.Create(ImportCollections);
+        ExportCollectionsCommand = ReactiveCommand.Create(ExportCollections);
 
         RequestService = Locator.Current.GetService<RequestService>()!;
 
@@ -49,7 +62,7 @@ public class MainWindowViewModel : ViewModelBase, IScreen
 
         if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime lifetime)
         {
-            lifetime.ShutdownRequested += async delegate(object? sender, ShutdownRequestedEventArgs e) 
+            lifetime.ShutdownRequested += async delegate(object? sender, ShutdownRequestedEventArgs e)
             {
                 var box = MessageBoxManager
                     .GetMessageBoxStandard("Unsaved changes",
@@ -60,8 +73,7 @@ public class MainWindowViewModel : ViewModelBase, IScreen
                 {
                     e.Cancel = true;
                 }
-                
-            };  
+            };
         }
 
         Router.Navigate.Execute(ViewModelCollection[0]);

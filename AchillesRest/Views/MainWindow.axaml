@@ -37,18 +37,22 @@
                 <MenuItem Header="_File">
                     <MenuItem Header="_Open..."></MenuItem>
                     <Separator />
-                    <MenuItem Header="Save" 
+                    <MenuItem Header="Save"
                               Command="{Binding SaveCommand}"
                               InputGesture="CTRL+S"
-                              HotKey="CTRL+S"
-                              >
+                              HotKey="CTRL+S">
                         <MenuItem.Icon>
                             <PathIcon Data="{StaticResource SaveRegular}" Width="15" Height="15" />
                         </MenuItem.Icon>
 
                     </MenuItem>
                     <Separator />
-                    <MenuItem Header="_Import Collection"></MenuItem>
+                    <MenuItem Header="Import/Export">
+                        <MenuItem Header="Import collections"
+                                  Command="{Binding ImportCollectionsCommand}" />
+                        <MenuItem Header="Export collections"
+                                  Command="{Binding ExportCollectionsCommand}" />
+                    </MenuItem>
                 </MenuItem>
             </Menu>
 
