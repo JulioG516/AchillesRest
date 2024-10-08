@@ -12,8 +12,7 @@
         xmlns:vm="using:AchillesRest.ViewModels"
         xmlns:achillesRest="clr-namespace:AchillesRest"
         Title="AchillesRest"
-        MinWidth="1200" MinHeight="720 "
-        >
+        MinWidth="1200" MinHeight="720 ">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -32,19 +31,27 @@
             </ExperimentalAcrylicBorder.Material>
         </ExperimentalAcrylicBorder>
 
-        
-        
+
         <DockPanel Margin="0 , 25, 0, 0">
             <Menu CornerRadius="2.0" Height="20" Background="DimGray" DockPanel.Dock="Top">
                 <MenuItem Header="_File">
                     <MenuItem Header="_Open..."></MenuItem>
-                    <Separator/>
-                    <MenuItem Header="Save" Command="{Binding SaveCommand}"></MenuItem>
-                    <Separator/>
+                    <Separator />
+                    <MenuItem Header="Save" 
+                              Command="{Binding SaveCommand}"
+                              InputGesture="CTRL+S"
+                              HotKey="CTRL+S"
+                              >
+                        <MenuItem.Icon>
+                            <PathIcon Data="{StaticResource SaveRegular}" Width="15" Height="15" />
+                        </MenuItem.Icon>
+
+                    </MenuItem>
+                    <Separator />
                     <MenuItem Header="_Import Collection"></MenuItem>
                 </MenuItem>
             </Menu>
-            
+
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
@@ -63,10 +70,8 @@
 
 
             </Grid>
-            
-                
-            
-          
+
+
         </DockPanel>
 
 
