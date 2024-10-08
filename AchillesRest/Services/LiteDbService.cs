@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using AchillesRest.Models;
 using LiteDB;
 
@@ -15,8 +16,8 @@ public class LiteDbService : IDbService
         var dbPath = AppContext.BaseDirectory + @"\achillesrest.db";
 
         var connectionString = $"Filename={dbPath}; Connection=Shared;";
-        
-        
+
+
         _lazyDb = new Lazy<LiteDatabase>(() => new LiteDatabase(connectionString));
     }
 
@@ -35,6 +36,13 @@ public class LiteDbService : IDbService
         var id = col.Upsert(collections); // InsertBulk
 
         return id > 0;
+    }
+
+    public bool DeleteCollection(Collection collection)
+    {
+        var col = Database.GetCollection<Collection>("Collections");
+        var result = col.Delete(collection.Id);
+        return result;
     }
 
     public bool SaveRequest(Request request)

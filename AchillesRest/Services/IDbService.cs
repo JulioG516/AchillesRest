@@ -8,6 +8,8 @@ public interface IDbService
     bool SaveCollection(Collection collection);
     bool SaveCollection(List<Collection> collections);
 
+    bool DeleteCollection(Collection collection);
+
     bool SaveRequest(Request request);
     bool SaveRequest(List<Request> requests);
 

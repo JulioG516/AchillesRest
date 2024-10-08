@@ -163,8 +163,8 @@ public class RequestService : ReactiveObject
         if (SelectedCollection == collectionViewModel)
             SelectedCollection = null;
 
-        // Save after delete
-        SaveChanges();
+        // Delete collection from DB.
+        Debug.WriteLine(_dbService.DeleteCollection(new Collection(collectionViewModel)));
     }
 
     public void AddRequest(CollectionViewModel collectionViewModel)
